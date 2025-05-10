@@ -1,0 +1,31 @@
+1.  Rules 
+    - Please mention why you're using that package / tech stack - reasons 
+
+Front End 
+    - Typescript - Why?  Helps with type safety and better developer experience.
+    - Tailwind CSS - Why? It enables rapid UI development with consistency and maintainability.
+    - Accertinity UI - Why? It gives production-ready, stylish Tailwind components
+    - Formik - Why ? It's widely used in industry. Formik makes handling complex forms in React easier, scalable, and less error-prone
+    - Redux - Why ? Used widely in industry project 
+    - TanStack query - Why ? I know normal fetch I want to explore advance stuff 
+    
+    Might Use-
+    Lazy and Suspense - To make site fast 
+    Jest - To find possibility of testing if app gets complex and bigger! 
+
+
+
+Back-end (Not aware much)
+    - NodeJS - Bit popular and widely used in small projects 
+    - Express - Used to create APIs faster
+
+
+Database 
+    - MongoDB - I already know MySQL. I want to explore more nosql db
+
+Devops 
+    - AWS - (Decided based on market share and resources)
+
+Version Control 
+    - Github - Most popular and widely used in Industry 
+
