@@ -1,8 +1,27 @@
-import React from 'react'
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Layout from "./Layout";
+import Hero from "./Hero";
+import Contact from "./Contact";
 
 const Body = () => {
+    const router = createBrowserRouter([
+        {
+            path:'/',
+            children:[
+                {
+                    path:'/',
+                    element: <Hero/>
+                },
+                {
+                    path:'/contact',
+                    element: <Contact/>
+                }
+            ],
+            element: <Layout/>
+        }
+    ])
   return (
-    <div className='bg-red-500'>Body</div>
+    <RouterProvider router={router}/>
   )
 }
 
