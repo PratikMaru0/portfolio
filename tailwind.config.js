@@ -5,7 +5,19 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        primary: '#ff3366',
+        secondary: '#3366ff',
+      },
+      fontFamily: {
+        sans: ['Georgia', 'serif'],
+        serif: ['Georgia', 'serif'],
+      },
+      boxShadow: {
+        'custom': '0 4px 20px rgba(0,0,0,0.1)',
+      },
+    },
   },
   plugins: [],
 }

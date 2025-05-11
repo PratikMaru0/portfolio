@@ -2,6 +2,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Layout from "./Layout";
 import Hero from "./Hero";
 import Contact from "./Contact";
+import Error from "./Error";
 
 const Body = () => {
     const router = createBrowserRouter([
@@ -17,7 +18,8 @@ const Body = () => {
                     element: <Contact/>
                 }
             ],
-            element: <Layout/>
+            element: <Layout/>,
+            errorElement: <Error/>
         }
     ])
   return (
