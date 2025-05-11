@@ -1,5 +1,5 @@
 const commonTxt = {
-    firstName: "William",
+    firstName: "Pratik",
     fullName: "Pratik Maru",
 }
 
