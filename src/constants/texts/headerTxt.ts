@@ -19,6 +19,10 @@ const headerTxt = {
         {
             text: "Testimonials",
             path:'/testimonials'
+        },
+        {
+            text: "Contact",
+            path: '/contact'
         }
     ],
     connect: "Connect ↗"

@@ -9,6 +9,7 @@ const Body = () => {
   const router = createBrowserRouter([
     {
       path: "/",
+      element: <Layout />,
       children: [
         {
           path: "/",
@@ -23,7 +24,6 @@ const Body = () => {
           element: <About />,
         },
       ],
-      element: <Layout />,
       errorElement: <Error />,
     },
   ]);

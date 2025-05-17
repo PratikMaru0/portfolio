@@ -1,6 +1,6 @@
 import { useState } from "react";
+import { NavLink } from "react-router-dom";
 import { headerTxt, commonTxt } from "../constants/texts";
-import { Link } from "react-router-dom";
 import { Button } from "./common";
 import Theme from "./Theme";
 
@@ -20,12 +20,18 @@ const Header = () => {
         <ul className="hidden md:flex bg-themeBackground/80 rounded-full px-6 py-2 gap-6 shadow-sm">
           {headerTxt.navigation.map((item) => (
             <li key={item.path}>
-              <Link
+              <NavLink
                 to={item.path}
-                className="text-themeText/80 hover:text-primary transition-colors px-3 py-1 rounded-full"
+                className={({ isActive }) =>
+                  `transition-colors px-3 py-1 rounded-full ${
+                    isActive
+                      ? "text-primary"
+                      : "text-themeText/80 hover:text-primary"
+                  }`
+                }
               >
                 {item.text}
-              </Link>
+              </NavLink>
             </li>
           ))}
         </ul>
@@ -75,14 +81,20 @@ const Header = () => {
       {menuOpen && (
         <div className="absolute top-full left-0 w-full bg-themeBackground shadow-custom rounded-b-2xl flex flex-col items-center py-4 md:hidden animate-fade-in z-30">
           {headerTxt.navigation.map((item) => (
-            <Link
+            <NavLink
               key={item.path}
               to={item.path}
-              className="w-full text-center py-2 text-lg text-themeText/80 hover:text-primary transition-colors"
+              className={({ isActive }) =>
+                `w-full text-center py-2 text-lg transition-colors ${
+                  isActive
+                    ? "text-primary"
+                    : "text-themeText/80 hover:text-primary/50"
+                }`
+              }
               onClick={() => setMenuOpen(false)}
             >
               {item.text}
-            </Link>
+            </NavLink>
           ))}
           <div className="flex items-center gap-3 mt-4">
             <Button
