@@ -7,8 +7,9 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: '#ff3366',
-        secondary: '#3366ff',
+        primary: 'rgba(var(--primary))',
+        themeBackground: 'rgba(var(--themeBackground))',
+        themeText: "rgba(var(--themeText))",
       },
       fontFamily: {
         sans: ['Georgia', 'serif'],
