@@ -18,7 +18,7 @@ const About = () => {
               {skills.map((skill: object, idx: number) => (
                 <div
                   key={idx}
-                  className="relative group rounded-lg border p-4 flex flex-col items-center justify-center w-18 h-18 hover:border-primary/70 hover:shadow-[0_0_20px_var(--tw-shadow-color)] hover:shadow-primary transition-shadow duration-300 m-2 border-gray-800 bg-gray-900"
+                  className="relative group rounded-lg border p-4 flex flex-col items-center justify-center w-18 h-18 hover:border-primary/70 hover:shadow-[0_0_20px_var(--tw-shadow-color)] hover:shadow-primary transition-shadow duration-300 m-2"
                 >
                   <img
                     src={(skill as { icon: string }).icon}

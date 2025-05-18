@@ -1,3 +1,4 @@
+import services from "./services";
 import skills from "./skills";
 
-export { skills };
+export { skills, services };

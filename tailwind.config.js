@@ -10,6 +10,7 @@ export default {
         primary: 'rgba(var(--primary))',
         themeBackground: 'rgba(var(--themeBackground))',
         themeText: "rgba(var(--themeText))",
+        border: 'rgba(var(--border))',
       },
       fontFamily: {
         sans: ['Georgia', 'serif'],
