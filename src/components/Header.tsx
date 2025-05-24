@@ -1,11 +1,16 @@
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { headerTxt, commonTxt } from "../constants/texts";
 import { Button } from "./common";
 import Theme from "./Theme";
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const navigate = useNavigate(); // Add this line
+
+  const handleBtnClick = () => {
+    navigate("/quotes"); // Redirect to /quotes without page reload
+  };
 
   return (
     <header className="w-full px-4 py-3 bg-themeBackground rounded-b-2xl shadow-custom flex items-center justify-between relative z-20">
@@ -74,6 +79,7 @@ const Header = () => {
         <Button
           text={headerTxt.connect}
           style="hidden md:flex bg-primary text-themeBackground hover:bg-primary/80"
+          onClick={handleBtnClick}
         />
       </div>
 
@@ -100,6 +106,7 @@ const Header = () => {
             <Button
               text={headerTxt.connect}
               style="bg-primary text-themeBackground hover:bg-primary/80"
+              onClick={handleBtnClick}
             />
           </div>
         </div>

@@ -4,5 +4,6 @@ import heroTxt from "./heroTxt";
 import contactTxt from "./contactTxt";
 import aboutTxt from "./about";
 import servicesText from "./services";
+import testimonialsText from "./testimonials";
 
-export { headerTxt, commonTxt, heroTxt, contactTxt, aboutTxt, servicesText };
+export { headerTxt, commonTxt, heroTxt, contactTxt, aboutTxt, servicesText, testimonialsText };

@@ -21,7 +21,7 @@ const headerTxt = {
       path: "/contact",
     },
   ],
-  connect: "Connect ↗",
+  connect: "Jokes 🤪",
 };
 
 export default headerTxt;

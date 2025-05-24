@@ -5,6 +5,8 @@ import Contact from "./Contact";
 import Error from "./Error";
 import About from "./About";
 import Services from "./Services";
+import Testimonials from "./Testimonials";
+import Quotes from "./Quotes";
 
 const Body = () => {
   const router = createBrowserRouter([
@@ -27,6 +29,14 @@ const Body = () => {
         {
           path: "/services",
           element: <Services />,
+        },
+        {
+          path: "/testimonials",
+          element: <Testimonials />,
+        },
+        {
+          path: "/quotes",
+          element: <Quotes />,
         },
       ],
       errorElement: <Error />,
