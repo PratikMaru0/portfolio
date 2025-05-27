@@ -7,6 +7,7 @@ import About from "./About";
 import Services from "./Services";
 import Testimonials from "./Testimonials";
 import Quotes from "./Quotes";
+import Admin from "./Admin";
 
 const Body = () => {
   const router = createBrowserRouter([
@@ -37,6 +38,10 @@ const Body = () => {
         {
           path: "/quotes",
           element: <Quotes />,
+        },
+        {
+          path: "/admin",
+          element: <Admin />,
         },
       ],
       errorElement: <Error />,
