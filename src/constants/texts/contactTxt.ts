@@ -7,6 +7,8 @@ const contactTxt = {
   emailPlaceholder: "Enter your email",
   messagePlaceholder: "Enter your message",
   submitButton: "Submit Now -> ",
+  emailSent: "Email sent successfully",
+  emailError: "Error sending email",
 };
 
 export default contactTxt;

@@ -1,6 +1,6 @@
 const commonTxt = {
-    firstName: "Pratik",
-    fullName: "Pratik Maru",
-}
+  firstName: "Pratik",
+  fullName: "Pratik Maru",
+};
 
 export default commonTxt;
