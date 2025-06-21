@@ -1,4 +1,5 @@
-import { Button, Toast } from "../components/common";
+import { Button } from "../components/common";
+import Login from "../components/Login";
 
 const Admin = () => {
   const dashboardNavigation = () => {
@@ -6,8 +7,8 @@ const Admin = () => {
   };
   return (
     <div>
-      <Button onClick={dashboardNavigation} text={"Goto Dashboard"} />
-      <Toast message="Redirected to Admin Dashboard" type="success" />
+      <Login />
+      {/* <Button onClick={dashboardNavigation} text="Content Management" /> */}
     </div>
   );
 };

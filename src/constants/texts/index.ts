@@ -6,6 +6,7 @@ import aboutTxt from "./about";
 import servicesText from "./services";
 import testimonialsText from "./testimonials";
 import config from "./config";
+import loginText from "./login";
 
 export {
   headerTxt,
@@ -16,4 +17,5 @@ export {
   servicesText,
   testimonialsText,
   config,
+  loginText,
 };

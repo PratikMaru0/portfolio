@@ -6,16 +6,19 @@ import Theme from "./Theme";
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const navigate = useNavigate(); // Add this line
+  const navigate = useNavigate();
 
   const handleBtnClick = () => {
-    navigate("/quotes"); // Redirect to /quotes without page reload
+    navigate("/quotes");
   };
 
   return (
     <header className="w-full px-4 py-3 bg-themeBackground rounded-b-2xl shadow-custom flex items-center justify-between relative z-20">
       {/* Logo  */}
-      <div className="flex items-center text-2xl font-bold text-themeText">
+      <div
+        onClick={() => navigate("/")}
+        className="flex items-center text-2xl font-bold text-themeText select-none cursor-pointer"
+      >
         {commonTxt.firstName}
         <span className="text-primary ml-1">.</span>
       </div>
