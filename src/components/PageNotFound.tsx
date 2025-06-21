@@ -1,7 +1,7 @@
 import { useRouteError } from "react-router-dom";
 import Header from "./Header";
 
-const Error = () => {
+const PageNotFound = () => {
   type ErrorResponse = {
     status: number;
     statusText: string;
@@ -27,4 +27,4 @@ const Error = () => {
   );
 };
 
-export default Error;
+export default PageNotFound;

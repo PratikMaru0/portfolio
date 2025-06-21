@@ -1,13 +1,14 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Layout from "./Layout";
-import Hero from "./Hero";
-import Contact from "./Contact";
-import Error from "./Error";
-import About from "./About";
-import Services from "./Services";
-import Testimonials from "./Testimonials";
-import Quotes from "./Quotes";
-import Admin from "./Admin";
+import Layout from "./components/Layout";
+import Hero from "./pages/Hero";
+import Contact from "./pages/Contact";
+import About from "./pages/About";
+import Services from "./pages/Services";
+import Testimonials from "./pages/Testimonials";
+import Quotes from "./components/Quotes";
+import Admin from "./pages/Admin";
+import Dashboard from "./pages/Dashboard";
+import PageNotFound from "./components/PageNotFound";
 
 const Body = () => {
   const router = createBrowserRouter([
@@ -43,8 +44,12 @@ const Body = () => {
           path: "/admin",
           element: <Admin />,
         },
+        {
+          path: "/admin/dashboard",
+          element: <Dashboard />,
+        },
       ],
-      errorElement: <Error />,
+      errorElement: <PageNotFound />,
     },
   ]);
   return <RouterProvider router={router} />;

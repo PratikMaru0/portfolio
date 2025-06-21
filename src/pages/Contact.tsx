@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Button } from "./common";
-import Input from "./common/Input";
-import TextArea from "./common/TextArea";
+import { Button } from "../components/common";
+import Input from "../components/common/Input";
+import TextArea from "../components/common/TextArea";
 import { contactTxt } from "../constants/texts";
 import axios from "axios";
 import { config } from "../constants/texts";

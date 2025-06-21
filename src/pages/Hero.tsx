@@ -1,5 +1,5 @@
 import heroTxt from "../constants/texts/heroTxt";
-import { Button } from "./common";
+import { Button } from "../components/common";
 import { profileImg } from "../assets";
 
 const Hero = () => {

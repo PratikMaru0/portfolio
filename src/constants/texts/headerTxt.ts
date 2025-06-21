@@ -20,6 +20,10 @@ const headerTxt = {
       text: "Contact",
       path: "/contact",
     },
+    {
+      text: "Admin",
+      path: "/admin",
+    },
   ],
   connect: "Jokes 🤪",
 };
