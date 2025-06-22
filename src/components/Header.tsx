@@ -3,17 +3,15 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { headerTxt, commonTxt } from "../constants/texts";
 import { Button } from "./common";
 import Theme from "./Theme";
-
+import ProfileIcon from "./common/ProfileIcon";
+import { useSelector } from "react-redux";
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
-
-  const handleBtnClick = () => {
-    navigate("/quotes");
-  };
+  const admin = useSelector((store: { admin: any }) => store.admin);
 
   return (
-    <header className="w-full px-4 py-3 bg-themeBackground rounded-b-2xl shadow-custom flex items-center justify-between relative z-20">
+    <header className="w-full px-4 py-3 bg-themeBackground shadow-primary/20 shadow-xl rounded-b-sm shadow-top flex items-center justify-between relative z-20">
       {/* Logo  */}
       <div
         onClick={() => navigate("/")}
@@ -48,9 +46,9 @@ const Header = () => {
       {/* Right section */}
       <div className="flex items-center gap-4">
         <Theme />
-
+        {admin && <ProfileIcon email={admin.emailId} />}
         <Button
-          style="md:hidden p-2 rounded focus:outline-none focus:ring-2 focus:ring-primary/20"
+          style="md:hidden p-2 rounded border-none focus:outline-none focus:ring-0"
           onClick={() => setMenuOpen((open) => !open)}
           text={""}
         >
@@ -78,12 +76,6 @@ const Header = () => {
             )}
           </svg>
         </Button>
-
-        <Button
-          text={headerTxt.connect}
-          style="hidden md:flex bg-primary text-themeBackground hover:bg-primary/80"
-          onClick={handleBtnClick}
-        />
       </div>
 
       {/* Mobile menu */}
@@ -105,13 +97,6 @@ const Header = () => {
               {item.text}
             </NavLink>
           ))}
-          <div className="flex items-center gap-3 mt-4">
-            <Button
-              text={headerTxt.connect}
-              style="bg-primary text-themeBackground hover:bg-primary/80"
-              onClick={handleBtnClick}
-            />
-          </div>
         </div>
       )}
     </header>

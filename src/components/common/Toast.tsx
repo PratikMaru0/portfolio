@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 
 interface ToastProps {
-  type: string;
   message: string;
   duration?: number;
+  status?: number;
 }
 
-const Toast = ({ message, type, duration = 3000 }: ToastProps) => {
+const Toast = ({ message, duration = 3000, status = 200 }: ToastProps) => {
   const [showToast, setShowToast] = useState(true);
 
   useEffect(() => {
@@ -21,7 +21,9 @@ const Toast = ({ message, type, duration = 3000 }: ToastProps) => {
 
   return (
     <div className="toast toast-bottom toast-start">
-      <div className={`alert alert-${type}`}>
+      <div
+        className={`alert ${status === 200 ? "alert-success" : "alert-error"}`}
+      >
         <span>{message}</span>
       </div>
     </div>

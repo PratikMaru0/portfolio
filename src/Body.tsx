@@ -5,7 +5,6 @@ import Contact from "./pages/Contact";
 import About from "./pages/About";
 import Services from "./pages/Services";
 import Testimonials from "./pages/Testimonials";
-import Quotes from "./components/Quotes";
 import Admin from "./pages/Admin";
 import Dashboard from "./pages/Dashboard";
 import PageNotFound from "./components/PageNotFound";
@@ -35,10 +34,6 @@ const Body = () => {
         {
           path: "/testimonials",
           element: <Testimonials />,
-        },
-        {
-          path: "/quotes",
-          element: <Quotes />,
         },
         {
           path: "/admin",

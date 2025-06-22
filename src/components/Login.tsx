@@ -3,19 +3,33 @@ import Input from "./common/Input";
 import { Button } from "./common";
 import { Link } from "react-router-dom";
 import { loginText } from "../constants/texts";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import { addAdmin } from "../utils/store/adminSlice";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [emailId, setEmailId] = useState("pratikmarutest@gmail.com");
+  const [password, setPassword] = useState("PraMaru123.@");
+  const dispatch = useDispatch();
 
   const handleLogin = async (e: any) => {
     e.preventDefault();
-    try{
-      
-    }catch(err){
-
+    try {
+      const res = await axios.post(
+        "http://localhost:3000/login",
+        {
+          emailId,
+          password,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+      dispatch(addAdmin(res.data.admin));
+    } catch (err: any) {
+      console.log(err.message);
     }
-    setEmail("");
+    setEmailId("");
     setPassword("");
   };
 
@@ -31,8 +45,8 @@ const Login = () => {
               label={loginText.email}
               placeholder={loginText.emailPlaceholder}
               type="email"
-              val={email}
-              setVal={setEmail}
+              val={emailId}
+              setVal={setEmailId}
               required
             />
           </div>
@@ -58,9 +72,10 @@ const Login = () => {
           <p className="text-center mt-4 text-sm">
             {loginText.dontHaveAccount}
             <Link
-              to="/forgotPassword"
+              to="/signup"
               className="text-center mb-4 text-sm text-primary"
             >
+              {" "}
               {loginText.signUp}
             </Link>
           </p>
