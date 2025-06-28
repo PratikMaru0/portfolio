@@ -1,4 +1,8 @@
-import React from "react";
+import axios from "axios";
+import Button from "./Button";
+import { useDispatch, useSelector } from "react-redux";
+import { removeAdmin } from "../../utils/store/adminSlice";
+import { BASE_URL } from "../../utils/constants";
 
 interface ProfileIconProps {
   email: string;
@@ -24,10 +28,20 @@ function getRandomColor(email: string) {
 const ProfileIcon = ({ email }: ProfileIconProps) => {
   const firstChar = email ? email[0].toUpperCase() : "?";
   const bgColor = getRandomColor(email);
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    try {
+      axios.post(BASE_URL + "/logout", {}, { withCredentials: true });
+      dispatch(removeAdmin());
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <>
-      <div className="dropdown dropdown-end">
+      <div className="dropdown dropdown-end dropdown-hover">
         <div
           tabIndex={0}
           role="button"
@@ -41,19 +55,15 @@ const ProfileIcon = ({ email }: ProfileIconProps) => {
         </div>
         <ul
           tabIndex={0}
-          className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+          className="menu menu-sm dropdown-content bg-themeBackground text-themeText rounded-box z-1 w-52 p-2 border-2 border-border"
         >
           <li>
-            <a className="justify-between">
-              Profile
-              <span className="badge">New</span>
+            <a className="font-bold justify-between text-center">
+              <p>{email}</p>
             </a>
           </li>
           <li>
-            <a>Settings</a>
-          </li>
-          <li>
-            <a>Logout</a>
+            <Button text="Logout" onClick={handleLogout} />
           </li>
         </ul>
       </div>

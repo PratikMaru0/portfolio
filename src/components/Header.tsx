@@ -46,7 +46,6 @@ const Header = () => {
       {/* Right section */}
       <div className="flex items-center gap-4">
         <Theme />
-        {admin && <ProfileIcon email={admin.emailId} />}
         <Button
           style="md:hidden p-2 rounded border-none focus:outline-none focus:ring-0"
           onClick={() => setMenuOpen((open) => !open)}
@@ -99,6 +98,7 @@ const Header = () => {
           ))}
         </div>
       )}
+      {admin && <ProfileIcon email={admin.emailId} />}
     </header>
   );
 };
