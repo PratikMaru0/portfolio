@@ -1,8 +1,9 @@
 import axios from "axios";
 import Button from "./Button";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { removeAdmin } from "../../utils/store/adminSlice";
 import { BASE_URL } from "../../utils/constants";
+import { addAlertMsg } from "../../utils/store/alertSlice";
 
 interface ProfileIconProps {
   email: string;
@@ -30,10 +31,18 @@ const ProfileIcon = ({ email }: ProfileIconProps) => {
   const bgColor = getRandomColor(email);
   const dispatch = useDispatch();
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     try {
-      axios.post(BASE_URL + "/logout", {}, { withCredentials: true });
+      const isUserLogout = await axios.post(
+        BASE_URL + "/logout",
+        {},
+        { withCredentials: true }
+      );
       dispatch(removeAdmin());
+      console.log(isUserLogout);
+      dispatch(
+        addAlertMsg({ message: isUserLogout.data.message, status: 200 })
+      );
     } catch (err) {
       console.log(err);
     }

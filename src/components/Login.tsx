@@ -1,25 +1,22 @@
 import { useState } from "react";
 import Input from "./common/Input";
-import { Button, Toast } from "./common";
+import { Button } from "./common";
 import { Link } from "react-router-dom";
 import { loginText } from "../constants/texts";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { addAdmin } from "../utils/store/adminSlice";
 import { BASE_URL } from "../utils/constants";
+import { addAlertMsg, removeAlertMsg } from "../utils/store/alertSlice";
 
 const Login = () => {
   const [emailId, setEmailId] = useState("pratikmarutest@gmail.com");
   const [password, setPassword] = useState("PraMaru123.@");
   const dispatch = useDispatch();
 
-  const [alertMsg, setAlertMsg] = useState({
-    message: "",
-    status: 200,
-  });
-
   const handleLogin = async (e: any) => {
     e.preventDefault();
+    dispatch(removeAlertMsg());
     try {
       const res = await axios.post(
         BASE_URL + "/login",
@@ -31,10 +28,18 @@ const Login = () => {
           withCredentials: true,
         }
       );
-      setAlertMsg({ message: res.data.message, status: res.data.status });
       dispatch(addAdmin(res.data.admin));
+      dispatch(
+        addAlertMsg({ message: res.data.message, status: res.data.status })
+      );
     } catch (err: any) {
-      console.log(err.message);
+      console.log(err);
+      dispatch(
+        addAlertMsg({
+          message: err.response.data.error,
+          status: err.response.status,
+        })
+      );
     }
     // setEmailId("");
     // setPassword("");
@@ -90,9 +95,6 @@ const Login = () => {
           </form>
         </div>
       </div>
-      {alertMsg.message && (
-        <Toast message={alertMsg.message} status={alertMsg.status} />
-      )}
     </>
   );
 };
