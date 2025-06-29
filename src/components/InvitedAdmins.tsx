@@ -1,4 +1,3 @@
-import React from "react";
 import { Button, Section } from "./common";
 import { adminTxt } from "../constants/texts";
 

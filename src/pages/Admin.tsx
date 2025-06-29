@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Section } from "../components/common";
+import { Button } from "../components/common";
 import Login from "../components/Login";
 import { useEffect, useState } from "react";
 import axios from "axios";
