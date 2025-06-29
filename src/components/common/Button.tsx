@@ -6,10 +6,12 @@ interface ButtonProps {
   onClick?: () => void;
   children?: ReactNode;
   type?: "button" | "submit" | "reset";
+  disabled?: boolean;
+  hidden?: boolean;
 }
 
 const Button = (props: ButtonProps) => {
-  const { text, style, onClick, children, type } = props;
+  const { text, style, onClick, children, type, disabled, hidden } = props;
 
   return (
     <button
@@ -18,6 +20,8 @@ const Button = (props: ButtonProps) => {
       } ${style}`}
       onClick={onClick}
       type={props.type}
+      disabled={disabled}
+      hidden={hidden}
     >
       {children ? children : text}
     </button>

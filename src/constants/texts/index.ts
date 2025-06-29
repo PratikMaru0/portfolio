@@ -7,6 +7,7 @@ import servicesText from "./services";
 import testimonialsText from "./testimonials";
 import config from "./config";
 import loginText from "./login";
+import adminTxt from "./adminTxt";
 
 export {
   headerTxt,
@@ -18,4 +19,5 @@ export {
   testimonialsText,
   config,
   loginText,
+  adminTxt,
 };

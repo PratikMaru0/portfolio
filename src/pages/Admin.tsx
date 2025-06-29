@@ -1,26 +1,69 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Button, Section } from "../components/common";
 import Login from "../components/Login";
-import Input from "../components/common/Input";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { BASE_URL } from "../utils/constants";
+import { addAlertMsg } from "../utils/store/alertSlice";
+import Confirm from "../components/common/Confirm";
+import InviteAdmin from "../components/InviteAdmin";
+import ActiveAdmins from "../components/ActiveAdmins";
+import InvitedAdmins from "../components/InvitedAdmins";
 
 const Admin = () => {
   const [email, setEmail] = useState("");
-  const [allowedUsers, setAllowedUsers] = useState([]);
+  const [invitedAdmins, setInvitedAdmin] = useState<string[]>([]);
+  const [activeAdmins, setActiveAdmins] = useState<string[]>([]);
+  const [confirmModalOpen, setConfirmModalOpen] = useState(false);
+  const [deleteEmail, setDeleteEmail] = useState("");
+
   const admin = useSelector((store: { admin: any }) => store.admin);
+  const dispatch = useDispatch();
+
+  const fetchInvitedAdmins = async () => {
+    const users = await axios.get(BASE_URL + "/getAllowedUsers", {
+      withCredentials: true,
+    });
+    setInvitedAdmin(users.data.data);
+  };
+
+  const fetchActiveAdmins = async () => {
+    const admins = await axios.get(BASE_URL + "/getAdmins", {
+      withCredentials: true,
+    });
+    setActiveAdmins(admins.data.data);
+  };
+
+  const handleRevokeAdminAccess = async (email: string) => {
+    try {
+      const isAdminRemoved = await axios.delete(BASE_URL + "/removeUser", {
+        data: { emailId: email },
+        withCredentials: true,
+      });
+      fetchInvitedAdmins();
+      fetchActiveAdmins();
+      dispatch(
+        addAlertMsg({
+          message: isAdminRemoved.data.message,
+          status: isAdminRemoved.data.status,
+        })
+      );
+    } catch (err: any) {
+      dispatch(
+        addAlertMsg({
+          message: err.response.data.error,
+          status: err.response.status,
+        })
+      );
+    }
+    setConfirmModalOpen(false);
+  };
 
   useEffect(() => {
     if (!admin) return;
-    const fetchAllowedUsers = async () => {
-      const users = await axios.get(BASE_URL + "/getAllowedUsers", {
-        withCredentials: true,
-      });
-      setAllowedUsers(users.data);
-    };
-    fetchAllowedUsers();
-  }, [admin]);
+    fetchInvitedAdmins();
+    fetchActiveAdmins();
+  }, [admin, setEmail]);
 
   const dashboardNavigation = () => {
     window.open("/admin/dashboard", "_blank");
@@ -36,23 +79,28 @@ const Admin = () => {
         <Button onClick={dashboardNavigation} text="Dashboard" />
       </div>
       <div className="flex flex-col gap-8 md:flex-row md:gap-6">
-        <Section title="Add Admins">
-          <div className="flex">
-            <Input
-              placeholder={"Enter a valid email address"}
-              type="email"
-              val={email}
-              setVal={setEmail}
-            />
-            <Button text="Add+" style="rounded-l-sm ml-1" />
-          </div>
-        </Section>
-        <Section title="Active Admins">
-          <div className="text-themeText/80">No active admins yet.</div>
-        </Section>
-        <Section title="Approved Admins (Pending Registration)">
-          <div className="text-themeText/80">No pending admins.</div>
-        </Section>
+        <InviteAdmin
+          fetchInvitedAdmins={fetchInvitedAdmins}
+          email={email}
+          setEmail={setEmail}
+        />
+        <ActiveAdmins
+          activeAdmins={activeAdmins}
+          setActiveAdmins={setActiveAdmins}
+          setConfirmModalOpen={setConfirmModalOpen}
+          setDeleteEmail={setDeleteEmail}
+        />
+        <InvitedAdmins
+          invitedAdmins={invitedAdmins}
+          setConfirmModalOpen={setConfirmModalOpen}
+          setDeleteEmail={setDeleteEmail}
+        />
+        <Confirm
+          open={confirmModalOpen}
+          onCancel={() => setConfirmModalOpen(false)}
+          onConfirm={() => handleRevokeAdminAccess(deleteEmail)}
+          message={""}
+        />
       </div>
     </div>
   );
