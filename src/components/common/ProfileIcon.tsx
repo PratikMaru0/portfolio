@@ -67,9 +67,18 @@ const ProfileIcon = ({ email }: ProfileIconProps) => {
           className="menu menu-sm dropdown-content bg-themeBackground text-themeText rounded-box z-1 w-52 p-2 border-2 border-border"
         >
           <li>
-            <a className="font-bold justify-between text-center">
-              <p>{email}</p>
-            </a>
+            <div className="font-bold justify-between text-center my-1 cursor-default">
+              <p>
+                {" "}
+                <span className="text-lg">🗿</span>{" "}
+                {email.slice(0, email.indexOf("@"))}
+              </p>
+            </div>
+          </li>
+          <li>
+            <div className="font-bold justify-between text-center my-1">
+              <p>Reset password</p>
+            </div>
           </li>
           <li>
             <Button text="Logout" onClick={handleLogout} />

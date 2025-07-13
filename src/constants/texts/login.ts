@@ -1,13 +1,15 @@
 const loginText = {
-  loginHeading: "Login",
+  loginHeading: "Log In",
   email: "Email",
   emailPlaceholder: "Enter your email address",
   password: "Password",
   passwordPlaceholder: "Enter your password",
-  loginBtn: "Login",
+  loginBtn: "Log-in",
   forgotPassword: "Forgot Password?",
   dontHaveAccount: "Don't have an account?",
-  signUp: "Sign Up",
+  haveAccount: "Have an account?",
+  signUpHeading: "Sign Up",
+  signupBtn: "Sign-up",
 };
 
 export default loginText;

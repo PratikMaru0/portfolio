@@ -13,7 +13,7 @@ import { BASE_URL } from "./utils/constants";
 import { useDispatch, useSelector } from "react-redux";
 import { addAdmin } from "./utils/store/adminSlice";
 import { useEffect } from "react";
-
+import Verification from "./components/VerifyAccount";
 const Body = () => {
   const dispatch = useDispatch();
   const admin = useSelector((store: { admin: any }) => store.admin);
@@ -67,6 +67,10 @@ const Body = () => {
         {
           path: "/admin/dashboard",
           element: <Dashboard />,
+        },
+        {
+          path: "/admin/verify",
+          element: <Verification />,
         },
       ],
       errorElement: <PageNotFound />,

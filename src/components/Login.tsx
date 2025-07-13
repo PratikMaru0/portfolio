@@ -3,46 +3,17 @@ import Input from "./common/Input";
 import { Button } from "./common";
 import { Link } from "react-router-dom";
 import { loginText } from "../constants/texts";
-import axios from "axios";
-import { useDispatch } from "react-redux";
-import { addAdmin } from "../utils/store/adminSlice";
-import { BASE_URL } from "../utils/constants";
-import { addAlertMsg, removeAlertMsg } from "../utils/store/alertSlice";
+import useAuth from "../utils/useAuth.ts";
 
 const Login = () => {
   const [emailId, setEmailId] = useState("pratikmarutest@gmail.com");
   const [password, setPassword] = useState("PraMaru123.@");
-  const dispatch = useDispatch();
+  const [isLogin, setIsLogin] = useState(true);
+  const { handleLogin, handleSignUp } = useAuth();
 
-  const handleLogin = async (e: any) => {
+  const handleBtnClick = (e: any) => {
     e.preventDefault();
-    dispatch(removeAlertMsg());
-    try {
-      const res = await axios.post(
-        BASE_URL + "/login",
-        {
-          emailId,
-          password,
-        },
-        {
-          withCredentials: true,
-        }
-      );
-      dispatch(addAdmin(res.data.admin));
-      dispatch(
-        addAlertMsg({ message: res.data.message, status: res.data.status })
-      );
-    } catch (err: any) {
-      console.log(err);
-      dispatch(
-        addAlertMsg({
-          message: err.response.data.error,
-          status: err.response.status,
-        })
-      );
-    }
-    // setEmailId("");
-    // setPassword("");
+    isLogin ? handleLogin(emailId, password) : handleSignUp(emailId, password);
   };
 
   return (
@@ -50,9 +21,9 @@ const Login = () => {
       <div className=" mt-20 flex items-center justify-center">
         <div className="rounded-2xl shadow-lg p-8 w-full max-w-sm border-2 border-border">
           <h2 className="text-3xl font-bold text-themeText mb-6 text-center">
-            Login
+            {isLogin ? loginText.loginHeading : loginText.signUpHeading}
           </h2>
-          <form onSubmit={handleLogin}>
+          <form onSubmit={handleBtnClick}>
             <div className="mb-4">
               <Input
                 label={loginText.email}
@@ -80,17 +51,20 @@ const Login = () => {
             >
               {loginText.forgotPassword}
             </Link>
-            <Button text="Login" type="submit" style="w-full rounded-lg mt-4" />
+            <Button
+              text={isLogin ? loginText.loginBtn : loginText.signupBtn}
+              type="submit"
+              style="w-full rounded-lg mt-4"
+            />
 
-            <p className="text-center mt-4 text-sm">
-              {loginText.dontHaveAccount}
-              <Link
-                to="/signup"
-                className="text-center mb-4 text-sm text-primary"
+            <p className="text-center mt-4 text-sm cursor-default">
+              {isLogin ? loginText.dontHaveAccount : loginText.haveAccount}{" "}
+              <span
+                onClick={() => setIsLogin(!isLogin)}
+                className="text-center mb-4 text-sm text-primary cursor-pointer"
               >
-                {" "}
-                {loginText.signUp}
-              </Link>
+                {isLogin ? loginText.signUpHeading : loginText.loginHeading}
+              </span>
             </p>
           </form>
         </div>
