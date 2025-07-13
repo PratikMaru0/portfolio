@@ -4,6 +4,8 @@ import { useDispatch } from "react-redux";
 import { removeAdmin } from "../../utils/store/adminSlice";
 import { BASE_URL } from "../../utils/constants";
 import { addAlertMsg } from "../../utils/store/alertSlice";
+import { useNavigate } from "react-router-dom";
+import resetPwdTxt from "../../constants/texts/resetPwdTxt";
 
 interface ProfileIconProps {
   email: string;
@@ -30,6 +32,7 @@ const ProfileIcon = ({ email }: ProfileIconProps) => {
   const firstChar = email ? email[0].toUpperCase() : "?";
   const bgColor = getRandomColor(email);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleLogout = async () => {
     try {
@@ -76,10 +79,16 @@ const ProfileIcon = ({ email }: ProfileIconProps) => {
             </div>
           </li>
           <li>
-            <div className="font-bold justify-between text-center my-1">
-              <p>Reset password</p>
+            <div className="flex justify-center my-1">
+              <p
+                className="font-bold cursor-pointer hover:text-primary transition-colors"
+                onClick={() => navigate("/updatePassword")}
+              >
+                {resetPwdTxt.resetPwdHeading}
+              </p>
             </div>
           </li>
+
           <li>
             <Button text="Logout" onClick={handleLogout} />
           </li>

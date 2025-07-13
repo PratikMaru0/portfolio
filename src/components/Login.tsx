@@ -7,7 +7,7 @@ import useAuth from "../utils/useAuth.ts";
 
 const Login = () => {
   const [emailId, setEmailId] = useState("pratikmarutest@gmail.com");
-  const [password, setPassword] = useState("PraMaru123.@");
+  const [password, setPassword] = useState("Pratik1234.@#");
   const [isLogin, setIsLogin] = useState(true);
   const { handleLogin, handleSignUp } = useAuth();
 
@@ -54,7 +54,7 @@ const Login = () => {
             <Button
               text={isLogin ? loginText.loginBtn : loginText.signupBtn}
               type="submit"
-              style="w-full rounded-lg mt-4"
+              style="w-full"
             />
 
             <p className="text-center mt-4 text-sm cursor-default">

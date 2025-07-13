@@ -14,9 +14,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { addAdmin } from "./utils/store/adminSlice";
 import { useEffect } from "react";
 import Verification from "./components/VerifyAccount";
+import ForgotPassword from "./components/ForgotPassword";
+import ResetPassword from "./components/ResetPassword";
+import UpdatePassword from "./components/UpdatePassword";
+import { commonTxt } from "./constants/texts";
 const Body = () => {
   const dispatch = useDispatch();
   const admin = useSelector((store: { admin: any }) => store.admin);
+
+  useEffect(() => {
+    document.title = commonTxt.title;
+  }, []);
 
   const fetchAdmin = async () => {
     try {
@@ -71,6 +79,18 @@ const Body = () => {
         {
           path: "/admin/verify",
           element: <Verification />,
+        },
+        {
+          path: "/forgotPassword",
+          element: <ForgotPassword />,
+        },
+        {
+          path: "/resetPassword/:token",
+          element: <ResetPassword />,
+        },
+        {
+          path: "/updatePassword",
+          element: <UpdatePassword />,
         },
       ],
       errorElement: <PageNotFound />,

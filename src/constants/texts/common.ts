@@ -1,6 +1,9 @@
 const commonTxt = {
   firstName: "Pratik",
-  fullName: "Pratik Maru",
+  lastName: "Maru",
+  title: "",
 };
+
+commonTxt.title = `${commonTxt.firstName}'s Portfolio`;
 
 export default commonTxt;
