@@ -22,10 +22,9 @@ const headerTxt = {
     },
     {
       text: "Admin",
-      path: "/admin",
+      path: "/dashboard/home/edit",
     },
   ],
-  connect: "Jokes 🤪",
 };
 
 export default headerTxt;

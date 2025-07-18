@@ -11,7 +11,7 @@ const Header = () => {
   const admin = useSelector((store: { admin: any }) => store.admin);
 
   return (
-    <header className="w-full px-4 py-3 bg-themeBackground shadow-primary/20 shadow-xl rounded-b-sm shadow-top flex items-center justify-between relative z-20">
+    <div className="sticky top-0 w-full px-4 py-3 bg-themeBackground shadow-primary/20 shadow-xl rounded-b-sm shadow-top flex items-center justify-between z-20">
       {/* Logo  */}
       <div
         onClick={() => navigate("/")}
@@ -99,7 +99,7 @@ const Header = () => {
         </div>
       )}
       {admin && <ProfileIcon email={admin.emailId} />}
-    </header>
+    </div>
   );
 };
 

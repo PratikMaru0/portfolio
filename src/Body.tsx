@@ -18,6 +18,10 @@ import ForgotPassword from "./components/ForgotPassword";
 import ResetPassword from "./components/ResetPassword";
 import UpdatePassword from "./components/UpdatePassword";
 import { commonTxt } from "./constants/texts";
+import ServicesEdit from "./components/dashboard/ServicesEdit";
+import AboutEdit from "./components/dashboard/AboutEdit";
+import TestimonialsEdit from "./components/dashboard/TestimonialsEdit";
+import HomeEdit from "./components/dashboard/HomeEdit";
 const Body = () => {
   const dispatch = useDispatch();
   const admin = useSelector((store: { admin: any }) => store.admin);
@@ -73,8 +77,34 @@ const Body = () => {
           element: <Admin />,
         },
         {
-          path: "/admin/dashboard",
+          path: "/dashboard",
           element: <Dashboard />,
+          children: [
+            {
+              path: "home/edit",
+              element: <HomeEdit />,
+            },
+            {
+              path: "contact/edit",
+              element: <Contact />,
+            },
+            {
+              path: "services/edit",
+              element: <ServicesEdit />,
+            },
+            {
+              path: "about/edit",
+              element: <AboutEdit />,
+            },
+            {
+              path: "services/edit",
+              element: <ServicesEdit />,
+            },
+            {
+              path: "testimonials/edit",
+              element: <TestimonialsEdit />,
+            },
+          ],
         },
         {
           path: "/admin/verify",

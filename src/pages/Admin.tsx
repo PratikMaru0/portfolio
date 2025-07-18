@@ -9,6 +9,7 @@ import Confirm from "../components/common/Confirm";
 import InviteAdmin from "../components/InviteAdmin";
 import ActiveAdmins from "../components/ActiveAdmins";
 import InvitedAdmins from "../components/InvitedAdmins";
+import { useNavigate } from "react-router-dom";
 
 const Admin = () => {
   const [email, setEmail] = useState("");
@@ -19,6 +20,7 @@ const Admin = () => {
 
   const admin = useSelector((store: { admin: any }) => store.admin);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const fetchInvitedAdmins = async () => {
     const users = await axios.get(BASE_URL + "/getAllowedUsers", {
@@ -66,7 +68,7 @@ const Admin = () => {
   }, [admin, setEmail]);
 
   const dashboardNavigation = () => {
-    window.open("/admin/dashboard", "_blank");
+    navigate("/dashboard/home/edit");
   };
 
   if (!admin) {

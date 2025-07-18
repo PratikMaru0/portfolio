@@ -26,7 +26,7 @@ const Layout = () => {
 
   return (
     <div className="min-h-screen bg-themeBackground text-themeText">
-      {pathname === "/admin/dashboard" ? null : <Header />}
+      <Header />
       <div className="w-11/12 md:w-9/12 mx-auto">
         <Outlet />
         {alertMsg && (

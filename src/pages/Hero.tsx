@@ -1,14 +1,47 @@
-import heroTxt from "../constants/texts/heroTxt";
+import { useEffect, useState } from "react";
 import { Button } from "../components/common";
-import { profileImg } from "../assets";
+import { BASE_URL } from "../utils/constants";
+import heroTxt from "../constants/texts/heroTxt";
+import { useNavigate } from "react-router-dom";
 
 const Hero = () => {
+  const [profile, setProfile] = useState({
+    profilePicUrl: "",
+    firstName: "",
+    lastName: "",
+    tagline: "",
+    shortIntro: "",
+    resumeUrl: "",
+  });
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const res = await fetch(`${BASE_URL}/profile`, {
+          credentials: "include",
+        });
+        const data = await res.json();
+        setProfile({
+          profilePicUrl: data.data?.profilePicUrl || "",
+          firstName: data.data?.firstName || "",
+          lastName: data.data?.lastName || "",
+          tagline: data.data?.tagline || "",
+          shortIntro: data.data?.shortIntro || "",
+          resumeUrl: data.data?.resumeUrl || "",
+        });
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchProfile();
+  }, []);
+
   return (
     <section className="text-center py-16 px-4 md:px-8 lg:px-20">
-      {/* Profile Image with Primary Color Border */}
       <div className="w-28 h-28 md:w-36 md:h-36 rounded-full border-4 border-primary p-1 mx-auto mb-6 flex items-center justify-center">
         <img
-          src={profileImg}
+          src={profile.profilePicUrl}
           alt="Profile"
           className="w-24 h-24 md:w-32 md:h-32 rounded-full object-cover"
         />
@@ -16,20 +49,20 @@ const Hero = () => {
 
       {/* Greeting */}
       <h2 className="font-normal text-lg md:text-xl mb-2 flex items-center justify-center gap-2 ">
-        {heroTxt.greeting}
+        {`${heroTxt.greetingPrefix} ${profile.firstName} ${profile.lastName}`}
         <span role="img" aria-label="wave">
-          👋🏻
+          {heroTxt.waveEmoji}
         </span>
       </h2>
 
       {/* Headline */}
       <h1 className="text-3xl sm:text-4xl md:text-5xl font-medium mb-4 leading-tight ">
-        {heroTxt.title}
+        {profile.tagline}
       </h1>
 
       {/* Description */}
       <p className="/80 text-base sm:text-lg max-w-2xl mx-auto mb-8 px-2">
-        {heroTxt.shortIntro}
+        {profile.shortIntro}
       </p>
 
       {/* Buttons */}
@@ -37,11 +70,12 @@ const Hero = () => {
         <Button
           text={heroTxt.connectWithMe}
           style="w-full sm:w-auto text-center bg-primary  rounded-full px-8 py-3 text-base cursor-pointer transition hover:bg-primary/80"
+          onClick={() => navigate("/contact")}
         />
         <Button
           text={heroTxt.resume}
           style="w-full sm:w-auto text-center border border-primary/20 rounded-full px-8 py-3 text-base  bg-themeBackground transition hover:bg-primary/10"
-          onClick={() => alert("Resume downloaded")}
+          onClick={() => window.open(profile.resumeUrl, "_blank")}
         />
       </div>
     </section>

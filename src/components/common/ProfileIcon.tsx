@@ -46,6 +46,7 @@ const ProfileIcon = ({ email }: ProfileIconProps) => {
       dispatch(
         addAlertMsg({ message: isUserLogout.data.message, status: 200 })
       );
+      navigate("/admin");
     } catch (err) {
       console.log(err);
     }

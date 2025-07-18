@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 interface ButtonProps {
-  text?: string;
+  text?: string | ReactNode;
   style?: string;
   onClick?: () => void;
   children?: ReactNode;
@@ -15,7 +15,7 @@ const Button = (props: ButtonProps) => {
 
   return (
     <button
-      className={`flex items-center justify-center border border-gray-300 rounded-full px-5 py-2  hover:border-pink-400 transition-colors ${
+      className={`flex items-center justify-center border border-gray-300 rounded-full px-5 py-2  hover:border-primary/70 transition-colors ${
         type === "submit" ? "bg-primary text-white" : ""
       } ${style}`}
       onClick={onClick}

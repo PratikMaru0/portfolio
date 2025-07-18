@@ -7,6 +7,7 @@ interface InputProps {
   setVal: (value: any) => void;
   required?: boolean;
   maxLength?: number;
+  autoFocus?: boolean;
 }
 
 const Input = ({
@@ -16,8 +17,9 @@ const Input = ({
   style,
   val,
   setVal,
-  required,
+  required = false,
   maxLength,
+  autoFocus,
 }: InputProps) => {
   return (
     <div className="flex flex-col items-start flex-1">
@@ -30,6 +32,7 @@ const Input = ({
         required
         onChange={(e) => setVal(e.target.value)}
         maxLength={maxLength}
+        autoFocus={autoFocus}
       />
     </div>
   );

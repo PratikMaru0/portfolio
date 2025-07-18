@@ -39,6 +39,7 @@ const verifyAccount = () => {
                   val={otp}
                   maxLength={6}
                   setVal={setOtp}
+                  autoFocus
                 />
               </div>
 

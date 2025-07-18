@@ -8,14 +8,14 @@
 }
 
 .light {
-  --primary: 255, 51, 102;
+  --primary: 37, 99, 235;
   --themeBackground: 255, 255, 255;
   --themeText: 0, 0, 0;
   --border: 230, 230, 230; /* Light gray */
 }
 
 .dark {
-  --primary: 255, 51, 102;
+  --primary: 37, 99, 235;
   --themeBackground: 0, 0, 0;
   --themeText: 255, 255, 255;
   --border: 50, 50, 50; /* Dark gray */
