@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Input from "../common/Input";
 import { Button, Loader } from "../common";
 import axios from "axios";
@@ -6,6 +6,8 @@ import { BASE_URL } from "../../utils/constants";
 import { useDispatch } from "react-redux";
 import { addAlertMsg } from "../../utils/store/alertSlice";
 import homeEditTxt from "./texts/homeEditTxt";
+import FileUpload from "./common/FileUpload";
+import imageKit from "./utils/imageKit";
 
 const HomeEdit = () => {
   const [firstName, setFirstName] = useState("");
@@ -13,12 +15,17 @@ const HomeEdit = () => {
   const [emailId, setEmailId] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [profilePicUrl, setProfilePicUrl] = useState("");
+  const [profilePicFileId, setProfilePicFileId] = useState("");
   const [tagline, setTagline] = useState("");
   const [shortIntro, setShortIntro] = useState("");
   const [resumeUrl, setResumeUrl] = useState("");
   const [socialMediaLinks, setSocialMediaLinks] = useState<string[]>([]);
   const [newSocialLink, setNewSocialLink] = useState("");
   const [loading, setLoading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const fileInputRefResume = useRef<HTMLInputElement>(null);
+  const [resumeFileId, setResumeFileId] = useState("");
+  const { handleUpload } = imageKit();
 
   const dispatch = useDispatch();
 
@@ -35,6 +42,8 @@ const HomeEdit = () => {
         setEmailId(data.emailId || "");
         setPhoneNumber(data.phoneNumber || "");
         setProfilePicUrl(data.profilePicUrl || "");
+        setProfilePicFileId(data.profilePicFileId || "");
+        setResumeFileId(data.resumeFileId || "");
         setTagline(data.tagline || "");
         setShortIntro(data.shortIntro || "");
         setResumeUrl(data.resumeUrl || "");
@@ -64,6 +73,35 @@ const HomeEdit = () => {
   const handleSubmit = async () => {
     try {
       setLoading(true);
+
+      let finalProfilePicUrl = profilePicUrl;
+      let finalProfilePicFileId = profilePicFileId;
+      let finalResumeUrl = resumeUrl;
+      let finalResumeFileId = resumeFileId;
+      const uploadResponse = await handleUpload(
+        fileInputRef,
+        profilePicFileId,
+        resumeFileId
+      );
+      if (uploadResponse?.url && uploadResponse?.fileId) {
+        finalProfilePicUrl = uploadResponse.url;
+        finalProfilePicFileId = uploadResponse.fileId;
+        setProfilePicUrl(uploadResponse.url);
+        setProfilePicFileId(uploadResponse.fileId);
+      }
+
+      const uploadResponseResume = await handleUpload(
+        fileInputRefResume,
+        profilePicFileId,
+        resumeFileId
+      );
+      if (uploadResponseResume?.url && uploadResponseResume?.fileId) {
+        finalResumeUrl = uploadResponseResume.url;
+        finalResumeFileId = uploadResponseResume.fileId;
+        setResumeUrl(uploadResponseResume.url);
+        setResumeFileId(uploadResponseResume.fileId);
+      }
+
       const res = await axios.patch(
         `${BASE_URL}/profile`,
         {
@@ -71,22 +109,27 @@ const HomeEdit = () => {
           lastName,
           emailId,
           phoneNumber,
-          profilePicUrl,
+          profilePicUrl: finalProfilePicUrl,
+          profilePicFileId: finalProfilePicFileId,
           tagline,
           shortIntro,
-          resumeUrl,
+          resumeUrl: finalResumeUrl,
+          resumeFileId: finalResumeFileId,
           socialMediaLinks,
         },
         { withCredentials: true }
       );
+
       dispatch(
         addAlertMsg({ message: res.data.message, status: res.data.status })
       );
     } catch (err: any) {
       dispatch(
-        addAlertMsg({ message: err.response.data.error, status: err.status })
+        addAlertMsg({
+          message: err.response?.data?.error || "Upload failed",
+          status: err.status || 400,
+        })
       );
-      console.log(err);
     } finally {
       setLoading(false);
     }
@@ -132,14 +175,21 @@ const HomeEdit = () => {
           setVal={setPhoneNumber}
           required
         />
-        <Input
+
+        <FileUpload
           label={homeEditTxt.profilePicUrlLabel}
-          placeholder={homeEditTxt.profilePicUrlPlaceholder}
-          type="text"
-          val={profilePicUrl}
-          setVal={setProfilePicUrl}
-          required
+          fileInputRef={fileInputRef}
+          currentUrl={profilePicUrl}
+          setProfilePicUrl={setProfilePicUrl}
         />
+
+        <FileUpload
+          label={homeEditTxt.resumeUrlLabel}
+          fileInputRef={fileInputRefResume}
+          currentUrl={resumeUrl}
+          setProfilePicUrl={setResumeUrl}
+        />
+
         <Input
           label={homeEditTxt.resumeUrlLabel}
           placeholder={homeEditTxt.resumeUrlPlaceholder}

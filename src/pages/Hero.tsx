@@ -13,11 +13,13 @@ const Hero = () => {
     shortIntro: "",
     resumeUrl: "",
   });
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProfile = async () => {
       try {
+        setLoading(true);
         const res = await fetch(`${BASE_URL}/profile`, {
           credentials: "include",
         });
@@ -32,10 +34,21 @@ const Hero = () => {
         });
       } catch (err) {
         console.log(err);
+      } finally {
+        setLoading(false);
       }
     };
     fetchProfile();
   }, []);
+
+  if (loading) {
+    return (
+      <section className="flex flex-col items-center justify-center min-h-[40vh]">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-primary border-solid mb-4"></div>
+        <span className="text-primary text-lg font-medium">Loading...</span>
+      </section>
+    );
+  }
 
   return (
     <section className="text-center py-16 px-4 md:px-8 lg:px-20">

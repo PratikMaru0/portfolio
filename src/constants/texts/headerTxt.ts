@@ -5,7 +5,7 @@ const headerTxt = {
       path: "/",
     },
     {
-      text: "About me",
+      text: "About",
       path: "/about",
     },
     {
