@@ -66,6 +66,7 @@ const imageKit = () => {
 
   return {
     handleUpload,
+    deleteFile,
     authenticator,
   };
 };

@@ -1,22 +1,27 @@
 import { useState } from "react";
-import { Button } from "../components/common";
+import { Button, Loader } from "../components/common";
 import Input from "../components/common/Input";
 import TextArea from "../components/common/TextArea";
 import { contactTxt } from "../constants/texts";
 import axios from "axios";
 import { config } from "../constants/texts";
+import { useDispatch } from "react-redux";
+import { addAlertMsg } from "../utils/store/alertSlice";
 
 const Contact = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+  const dispatch = useDispatch();
 
   const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
   const templateId = import.meta.env.VITE_TEMPLATE_ID;
   const userId = import.meta.env.VITE_USERID;
+  const [loading, setLoading] = useState(false);
 
   const sendEmail = (e: any) => {
     e.preventDefault();
+    setLoading(true);
     axios
       .post(
         config.emailJSLink,
@@ -26,8 +31,9 @@ const Contact = () => {
           user_id: userId,
           template_params: {
             name: name,
-            email: email,
+            email: import.meta.env.VITE_EMAIL_ID,
             message: message,
+            reply_to: email,
           },
         },
         {
@@ -37,14 +43,18 @@ const Contact = () => {
         }
       )
       .then((response) => {
-        alert(contactTxt.emailSent);
+        dispatch(addAlertMsg({ message: contactTxt.emailSent, status: 200 }));
         console.log(response.data);
         setName("");
         setEmail("");
         setMessage("");
       })
-      .catch((error) => {
-        console.error(contactTxt.emailError, error);
+      .catch((err: any) => {
+        console.log(err);
+        dispatch(addAlertMsg({ message: contactTxt.emailError, status: 400 }));
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
   return (
@@ -82,7 +92,11 @@ const Contact = () => {
             maxLength={500}
           />
           <div className="flex justify-center">
-            <Button text={contactTxt.submitButton} type="submit" />
+            <Button
+              text={loading ? <Loader /> : contactTxt.submitButton}
+              type="submit"
+              disabled={loading}
+            />
           </div>
         </form>
       </div>
