@@ -1,35 +1,38 @@
-import { arrowIcon } from "../../assets";
-
 interface CardProps {
   key: string | number;
   testimonial: {
     title: string;
     link: string;
+    desc: string;
   };
 }
+import Button from "./Button";
+
 const Card = ({ testimonial, key }: CardProps) => {
   return (
     <div
-      className="my-4 relative rounded-2xl overflow-hidden min-w-[320px] max-w-xs border border-border hover:border-primary/70 shadow-[0_0_5px_var(--tw-shadow-color)] shadow-themeText hover:shadow-[0_0_20px_var(--tw-shadow-color)] hover:shadow-primary transition-shadow duration-300 h-80"
+      className="my-4 relative rounded-lg overflow-hidden min-w-[320px] max-w-sm  border-2 border-border shadow-sm hover:border-primary/70 flex flex-col hover:shadow-[0_0_10px_var(--tw-shadow-color)] hover:shadow-primary transition-shadow duration-300"
       key={key}
     >
       <img
+        className="rounded-t-lg w-full h-44 object-cover"
         src={testimonial.link}
         alt={testimonial.title}
-        className="w-full h-full object-cover"
       />
-      <div className="absolute left-4 right-4 bottom-6 rounded-xl flex items-center px-6 py-4 shadow bg-themeBackground">
+      <div className="p-5 flex flex-col flex-1">
         <div className="flex-1">
-          <div className="font-semibold text-lg mb-1">{testimonial.title}</div>
+          <h5 className="mb-2 text-2xl font-bold tracking-tight text-themeText">
+            {testimonial.title}
+          </h5>
+          <p className="mb-3 font-normal text-themeText/70">
+            {testimonial.desc}
+          </p>
         </div>
-        <div className="ml-4 flex items-center justify-center w-10 h-10 rounded-full bg-white hover:bg-primary border-2 border-primary hover:cursor-pointer">
-          {/* Arrow icon */}
-          <img src={arrowIcon} />
-        </div>
-        <div className="ml-4 flex items-center justify-center w-10 h-10 rounded-full bg-white hover:bg-primary border-2 border-primary hover:cursor-pointer">
-          {/* Arrow icon */}
-          <img src={arrowIcon} />
-        </div>
+        <Button
+          style="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-primary rounded-lg hover:bg-primary/80 focus:ring-4 focus:outline-none focus:ring-primary/30"
+          onClick={() => {}}
+          text={"Read more"}
+        />
       </div>
     </div>
   );

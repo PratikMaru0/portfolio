@@ -8,6 +8,9 @@ const adminTxt = {
   joined: "Joined in ",
   noActiveAdmins: "No active admins",
   noInvitedAdmins: "No invited admins",
+  confirmModalTitle:
+    "Are you sure, you want to delete this user from platform ? ",
+  confirmModalNote: "This action can not be undone.",
 };
 
 export default adminTxt;

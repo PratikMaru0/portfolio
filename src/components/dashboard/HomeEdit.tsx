@@ -8,6 +8,8 @@ import { addAlertMsg } from "../../utils/store/alertSlice";
 import homeEditTxt from "./texts/homeEditTxt";
 import FileUpload from "./common/FileUpload";
 import imageKit from "./utils/imageKit";
+import Confirm from "../common/Confirm";
+import ActionButton from "../common/ActionButton";
 
 const HomeEdit = () => {
   const [firstName, setFirstName] = useState("");
@@ -25,6 +27,8 @@ const HomeEdit = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const fileInputRefResume = useRef<HTMLInputElement>(null);
   const [resumeFileId, setResumeFileId] = useState("");
+  const [idx, setIdx] = useState(-1);
+  const [confirmModalOpen, setConfirmModalOpen] = useState(false);
   const { handleUpload } = imageKit();
 
   const dispatch = useDispatch();
@@ -58,17 +62,6 @@ const HomeEdit = () => {
     };
     fetchHomeDetails();
   }, [dispatch]);
-
-  const handleAddSocialLink = () => {
-    if (newSocialLink && !socialMediaLinks.includes(newSocialLink)) {
-      setSocialMediaLinks([...socialMediaLinks, newSocialLink]);
-      setNewSocialLink("");
-    }
-  };
-
-  const handleRemoveSocialLink = (idx: number) => {
-    setSocialMediaLinks(socialMediaLinks.filter((_, i) => i !== idx));
-  };
 
   const handleSubmit = async () => {
     try {
@@ -133,6 +126,19 @@ const HomeEdit = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleAddSocialLink = () => {
+    if (newSocialLink && !socialMediaLinks.includes(newSocialLink)) {
+      setSocialMediaLinks([...socialMediaLinks, newSocialLink]);
+
+      setNewSocialLink("");
+    }
+  };
+
+  const handleRemoveSocialLink = (idx: number) => {
+    setSocialMediaLinks(socialMediaLinks.filter((_, i) => i !== idx));
+    setConfirmModalOpen(false);
   };
 
   return (
@@ -216,7 +222,7 @@ const HomeEdit = () => {
         <div>
           <label className="block font-medium mb-1">
             {homeEditTxt.socialMediaLinksLabel}{" "}
-            <span className="text-xs text-gray-500">
+            <span className="text-xs text-themeText/50">
               {homeEditTxt.socialMediaLinksOptional}
             </span>
           </label>
@@ -249,18 +255,27 @@ const HomeEdit = () => {
                 className="flex items-center bg-primary/10 border border-primary/70 px-3 py-1 rounded shadow text-xs"
               >
                 <span className="truncate max-w-[120px]">{link}</span>
-                <button
-                  type="button"
-                  className="ml-2 text-red-400 hover:text-red-700"
-                  onClick={() => handleRemoveSocialLink(idx)}
+                <ActionButton
+                  text={"❌"}
+                  onClick={() => {
+                    setConfirmModalOpen(true);
+                    setIdx(idx);
+                  }}
                   aria-label={homeEditTxt.removeSocialLinkAria}
-                >
-                  &times;
-                </button>
+                  style="ml-2"
+                />
               </li>
             ))}
           </ul>
         </div>
+
+        <Confirm
+          open={confirmModalOpen}
+          onCancel={() => setConfirmModalOpen(false)}
+          onConfirm={() => handleRemoveSocialLink(idx)}
+          title={homeEditTxt.confirmModalTitle}
+          note={homeEditTxt.confirmModalNote}
+        />
         <Button
           text={loading ? <Loader /> : homeEditTxt.saveBtn}
           type="submit"

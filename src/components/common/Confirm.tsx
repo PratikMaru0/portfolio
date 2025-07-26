@@ -2,8 +2,8 @@ import Button from "./Button";
 
 interface ConfirmProps {
   open: boolean;
-  title?: string;
-  message: string;
+  title: string;
+  message?: string;
   confirmText?: string;
   cancelText?: string;
   note?: string;
@@ -13,7 +13,7 @@ interface ConfirmProps {
 
 const Confirm = ({
   open,
-  title = "Are you sure, you want to delete this user from platform ? ",
+  title = "Are you sure, you want to delete ? ",
   note = "This action can not be undone.",
   message,
   confirmText = "Yes",
@@ -24,8 +24,8 @@ const Confirm = ({
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-themeBackground/50">
-      <div className="bg-themeBackground/80 border border-border rounded-xl shadow-lg p-6 w-full max-w-xs">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-themeBackground/70">
+      <div className="bg-themeBackground border border-border rounded-xl shadow-lg p-6 w-full max-w-xs">
         <p className="text-md font-bold mb-2 text-themeText">{title}</p>
         <p className="mb-2 text-semibold text-sm text-primary/80">{note}</p>
         <p className="mb-6 text-themeText/80">{message}</p>
@@ -37,9 +37,9 @@ const Confirm = ({
             text={cancelText}
           />
           <Button
-            style="btn btn-sm btn-error text-themeText"
+            style="btn btn-sm text-themeText"
             onClick={onConfirm}
-            type="button"
+            type="submit"
             text={confirmText}
           />
         </div>

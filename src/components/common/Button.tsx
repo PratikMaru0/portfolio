@@ -16,7 +16,7 @@ const Button = (props: ButtonProps) => {
   return (
     <button
       className={`flex items-center justify-center border border-gray-300 rounded-full px-5 py-2  hover:border-primary/70 transition-colors ${
-        type === "submit" ? "bg-primary text-white" : ""
+        type === "submit" ? "bg-primary text-themeText" : "bgtext-themeText"
       } ${style}`}
       onClick={onClick}
       type={props.type}

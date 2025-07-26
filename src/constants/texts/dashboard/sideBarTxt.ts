@@ -18,10 +18,6 @@ const sideBarTxt = {
       path: "/dashboard/testimonials/edit",
     },
     {
-      text: "Contact",
-      path: "/dashboard/contact/edit",
-    },
-    {
       text: "Admin Management",
       path: "/admin",
     },

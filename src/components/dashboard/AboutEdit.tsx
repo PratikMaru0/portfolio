@@ -9,6 +9,8 @@ import { addAlertMsg } from "../../utils/store/alertSlice";
 import aboutEditTxt from "./texts/aboutEditTxt";
 import FileUpload from "./common/FileUpload";
 import imageKit from "./utils/imageKit";
+import Confirm from "../common/Confirm";
+import ActionButton from "../common/ActionButton";
 interface Skill {
   _id?: string;
   skill: string;
@@ -22,37 +24,39 @@ const AboutEdit = () => {
   const [newSkill, setNewSkill] = useState("");
   const [newSkillIcon, setNewSkillIcon] = useState("");
   const [newSkillIconFileId, setNewSkillIconFileId] = useState<string>("");
+  const [addLoading, setAddLoading] = useState(false);
   const [loading, setLoading] = useState(false);
   const [aboutId, setAboutId] = useState<string>("");
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [confirmModalOpen, setConfirmModalOpen] = useState(false);
+  const [deleteSkill, setDeleteSkill] = useState<any>();
   const { handleUpload } = imageKit();
   const { deleteFile } = imageKit();
   const dispatch = useDispatch();
 
+  const fetchAbout = async () => {
+    try {
+      setLoading(true);
+      const res = await axios.get(`${BASE_URL}/about`, {
+        withCredentials: true,
+      });
+      const about = res.data.abouts?.[0] || {};
+      setAboutId(about._id || "");
+      setIntroduction(about.introduction || "");
+      setSkills(about.skills || []);
+    } catch (err: any) {
+      dispatch(addAlertMsg({ message: aboutEditTxt.fetchError, status: 400 }));
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchAbout = async () => {
-      try {
-        setLoading(true);
-        const res = await axios.get(`${BASE_URL}/about`, {
-          withCredentials: true,
-        });
-        const about = res.data.abouts?.[0] || {};
-        setAboutId(about._id || "");
-        setIntroduction(about.introduction || "");
-        setSkills(about.skills || []);
-      } catch (err: any) {
-        dispatch(
-          addAlertMsg({ message: aboutEditTxt.fetchError, status: 400 })
-        );
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchAbout();
   }, [dispatch]);
 
   const handleAddSkill = async () => {
-    setLoading(true);
+    setAddLoading(true);
     try {
       if (!newSkill || !newSkillIcon) {
         dispatch(
@@ -103,7 +107,7 @@ const AboutEdit = () => {
     } catch (err: any) {
       dispatch(addAlertMsg({ message: aboutEditTxt.updateError, status: 400 }));
     } finally {
-      setLoading(false);
+      setAddLoading(false);
     }
   };
 
@@ -113,6 +117,7 @@ const AboutEdit = () => {
       return;
     }
     try {
+      setConfirmModalOpen(false);
       setLoading(true);
       if (skillObj.iconFileId) {
         await deleteFile(skillObj.iconFileId);
@@ -120,7 +125,7 @@ const AboutEdit = () => {
       await axios.delete(`${BASE_URL}/about/${aboutId}/skill/${skillObj._id}`, {
         withCredentials: true,
       });
-      setSkills(skills.filter((_, i) => i !== idx));
+      await fetchAbout();
       dispatch(addAlertMsg({ message: "Skill deleted", status: 200 }));
     } catch (err: any) {
       dispatch(addAlertMsg({ message: aboutEditTxt.updateError, status: 400 }));
@@ -129,46 +134,15 @@ const AboutEdit = () => {
     }
   };
 
-  // const handleSubmit = async () => {
-  //   try {
-  //     setLoading(true);
-  //     if (newSkill) {
-  //       await handleAddSkill();
-  //     }
-  //     let res;
-  //     if (aboutId) {
-  //       res = await axios.put(
-  //         `${BASE_URL}/about/${aboutId}`,
-  //         { introduction, skills },
-  //         { withCredentials: true }
-  //       );
-  //     } else {
-  //       res = await axios.post(
-  //         `${BASE_URL}/about`,
-  //         { introduction, skills },
-  //         { withCredentials: true }
-  //       );
-  //       setAboutId(res.data.abouts?._id || "");
-  //     }
-  //     dispatch(
-  //       addAlertMsg({ message: aboutEditTxt.updateSuccess, status: 200 })
-  //     );
-  //   } catch (err: any) {
-  //     dispatch(addAlertMsg({ message: aboutEditTxt.updateError, status: 400 }));
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
   const handleSubmit = async () => {
     try {
       setLoading(true);
       if (newSkill) {
         await handleAddSkill();
         setLoading(false);
-        return; // Prevent duplicate/old state submit
+        return;
       }
-      // ...proceed with normal submit if no new skill
+
       let res;
       if (aboutId) {
         res = await axios.put(
@@ -224,10 +198,10 @@ const AboutEdit = () => {
             />
 
             <Button
-              text={loading ? <Loader /> : aboutEditTxt.addSkillBtn}
+              text={addLoading ? <Loader /> : aboutEditTxt.addSkillBtn}
               type="button"
               onClick={handleAddSkill}
-              disabled={loading}
+              disabled={addLoading}
             />
             <p>
               Download icons from site :-{" "}
@@ -259,22 +233,34 @@ const AboutEdit = () => {
                   <img
                     src={skillObj.icon}
                     alt="icon"
-                    className="w-6 h-6 ml-2 rounded-full object-cover border"
+                    className="w-6 h-6 ml-2 rounded-full object-cover border mx-2"
                   />
                 )}
-                <button
-                  type="button"
-                  className="ml-2 text-red-400 hover:text-red-700"
-                  onClick={() => handleRemoveSkill(idx, skillObj)}
-                  aria-label={aboutEditTxt.removeSkillAria}
-                  disabled={loading}
-                >
-                  &times;
-                </button>
+                <ActionButton
+                  text={"❌"}
+                  onClick={() => {
+                    setDeleteSkill({
+                      idx, // include index for correct removal
+                      skill: skillObj,
+                      icon: skillObj.icon,
+                    });
+                    setConfirmModalOpen(true);
+                  }}
+                  disabled={addLoading}
+                />
               </li>
             ))}
           </ul>
         </div>
+        <Confirm
+          open={confirmModalOpen}
+          onCancel={() => setConfirmModalOpen(false)}
+          onConfirm={() =>
+            handleRemoveSkill(deleteSkill.idx, deleteSkill.skill)
+          }
+          title={aboutEditTxt.deleteTitle}
+          note={aboutEditTxt.deleteNote}
+        />
         <Button
           text={loading ? <Loader /> : aboutEditTxt.saveBtn}
           type="submit"

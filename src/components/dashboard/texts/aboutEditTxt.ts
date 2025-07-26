@@ -15,6 +15,8 @@ const aboutEditTxt = {
   fetchError: "Failed to fetch about details",
   removeSkillAria: "Remove Skill",
   iconLink: "https://icons8.com/icons",
+  deleteTitle: "Delete Skill",
+  deleteNote: "Are you sure you want to delete this skill? This action can not be undone",
 };
 
 export default aboutEditTxt;

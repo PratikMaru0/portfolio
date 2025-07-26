@@ -1,0 +1,30 @@
+const servicesEditTxt = {
+  heading: "Edit Services",
+  serviceLabel: "Service Name",
+  servicePlaceholder: "Enter service name",
+  descriptionLabel: "Description",
+  descriptionPlaceholder: "Enter service description",
+  iconLabel: "Icon Image",
+  iconUploadBtn: "Upload Icon",
+  addServiceBtn: "Add Service",
+  noServices: "No services added.",
+  saveBtn: "Save Changes",
+  loadingBtn: "Saving...",
+  updateSuccess: "Service details updated successfully!",
+  updateError: "Failed to update service details",
+  fetchError: "Failed to fetch service details",
+  removeServiceAria: "Remove Service",
+  iconLink: "https://icons8.com/icons",
+  deleteConfirm: "Are you sure you want to delete this service?",
+  requiredField: "Name, description and icon are required",
+  addSuccess: "Service added successfully!",
+  addError: "Failed to add service",
+  removeError: "Failed to remove service",
+  removeSuccess: "Service removed successfully!",
+  confirmModalTitle: "Delete Service",
+  confirmModalNote:
+    "Are you sure you want to delete this service? This action can not be undone",
+  cancelBtn: "Cancel",
+};
+
+export default servicesEditTxt;

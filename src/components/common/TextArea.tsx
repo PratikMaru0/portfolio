@@ -19,11 +19,11 @@ const TextArea = ({
 }: TextAreaProps) => {
   return (
     <div className="flex flex-col items-start">
-      <div className="text-md">{label}</div>
+      <div className="text-md my-1">{label}</div>
       <textarea
         placeholder={placeholder}
         rows={rows || 6}
-        className={`text-themeText bg-themeBackground w-full px-4 py-3 border rounded-md focus:outline-none focus:border-none focus:ring-2 focus:ring-primary text-base resize-none ${style}`}
+        className={`bg-themeBackground text-themeText px-4 py-3 border-2 rounded-md focus:outline-none focus:border-primary focus:ring-primary text-base w-full ${style}`}
         value={val}
         maxLength={maxLength}
         onChange={(e) => setVal(e.target.value)}

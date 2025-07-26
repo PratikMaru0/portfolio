@@ -10,6 +10,7 @@ import InviteAdmin from "../components/InviteAdmin";
 import ActiveAdmins from "../components/ActiveAdmins";
 import InvitedAdmins from "../components/InvitedAdmins";
 import { useNavigate } from "react-router-dom";
+import { adminTxt } from "../constants/texts";
 
 const Admin = () => {
   const [email, setEmail] = useState("");
@@ -101,7 +102,8 @@ const Admin = () => {
           open={confirmModalOpen}
           onCancel={() => setConfirmModalOpen(false)}
           onConfirm={() => handleRevokeAdminAccess(deleteEmail)}
-          message={""}
+          title={adminTxt.confirmModalTitle}
+          note={adminTxt.confirmModalNote}
         />
       </div>
     </div>

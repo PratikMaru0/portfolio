@@ -85,20 +85,12 @@ const Body = () => {
               element: <HomeEdit />,
             },
             {
-              path: "contact/edit",
-              element: <Contact />,
-            },
-            {
               path: "services/edit",
               element: <ServicesEdit />,
             },
             {
               path: "about/edit",
               element: <AboutEdit />,
-            },
-            {
-              path: "services/edit",
-              element: <ServicesEdit />,
             },
             {
               path: "testimonials/edit",

@@ -27,6 +27,9 @@ const homeEditTxt = {
   fetchError: "Failed to fetch home details",
   updateSuccess: "Home details updated successfully!",
   updateError: "Failed to update home details",
+  confirmModalTitle: "Delete Social Link",
+  confirmModalNote:
+    "Are you sure you want to delete this social link? This action can not be undone",
 };
 
 export default homeEditTxt;

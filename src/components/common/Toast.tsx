@@ -20,7 +20,7 @@ const Toast = ({ message, duration = 3000, status = 200 }: ToastProps) => {
   }
 
   return (
-    <div className="toast toast-bottom toast-start">
+    <div className="toast toast-bottom toast-start z-50">
       <div
         className={`alert ${status === 200 ? "alert-success" : "alert-error"}`}
       >
