@@ -3,10 +3,21 @@ import axios from "axios";
 import { BASE_URL } from "../utils/constants";
 import { testimonialsText } from "../constants/texts";
 import Card from "../components/common/Card";
+import { useDispatch } from "react-redux";
+import { addAlertMsg } from "../utils/store/alertSlice";
+import TestimonialsMoreInfo from "../components/dashboard/TestimonialsMoreInfo";
+
+import { useRef } from "react";
 
 const Testimonials = () => {
   const [projects, setProjects] = useState<any[]>([]);
+  const [openModal, setOpenModal] = useState(false);
+  const [selectedTestimonial, setSelectedTestimonial] = useState<any | null>(
+    null
+  );
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+  const modalRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -14,14 +25,37 @@ const Testimonials = () => {
         setLoading(true);
         const res = await axios.get(`${BASE_URL}/projects`);
         setProjects(res.data.data || []);
-      } catch (err) {
-        // Optionally handle error
+      } catch (err: any) {
+        dispatch(
+          addAlertMsg({ message: err.response.data.error, status: err.status })
+        );
       } finally {
         setLoading(false);
       }
     };
     fetchProjects();
   }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        modalRef.current &&
+        !modalRef.current.contains(event.target as Node)
+      ) {
+        setOpenModal(false);
+      }
+    };
+
+    if (openModal) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [openModal]);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -42,18 +76,34 @@ const Testimonials = () => {
       {/* Scroll container */}
       <div className="w-full overflow-x-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-transparent">
         <div className="flex flex-nowrap md:justify-center gap-6 px-4 pb-2 w-max min-w-full">
-          {projects.map((project, idx) => (
-            <Card
-              key={project._id || idx}
-              testimonial={{
-                title: project.projectName,
-                link: project.imageUrl,
-                desc: project.description,
-              }}
-            />
-          ))}
+          {projects.map((project, idx) => {
+            return (
+              <Card
+                key={project._id || idx}
+                testimonial={{
+                  title: project.projectName,
+                  link: `${project.imageUrl}`,
+                  desc: project.description,
+                  gitHubLink: project.gitHubLink,
+                  liveLink: project.liveLink,
+                }}
+                onMoreInfo={() => {
+                  setSelectedTestimonial(project);
+                  setOpenModal(true);
+                }}
+              />
+            );
+          })}
         </div>
       </div>
+      {openModal && selectedTestimonial && (
+        <TestimonialsMoreInfo
+          openModal={openModal}
+          setOpenModal={setOpenModal}
+          modalRef={modalRef}
+          data={selectedTestimonial}
+        />
+      )}
     </div>
   );
 };

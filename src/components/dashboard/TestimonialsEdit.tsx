@@ -29,7 +29,7 @@ const TestimonialsEdit = () => {
   const [newName, setNewName] = useState("");
   const [newMessage, setNewMessage] = useState("");
   const [newSummary, setNewSummary] = useState("");
-  const [newTechStack, setNewTechStack] = useState<string[]>([]);
+  const [newTechStackInput, setNewTechStackInput] = useState("");
   const [newGitHubLink, setNewGitHubLink] = useState("");
   const [newLiveLink, setNewLiveLink] = useState("");
   const [newFileUrl, setNewFileUrl] = useState("");
@@ -42,7 +42,8 @@ const TestimonialsEdit = () => {
   const [editName, setEditName] = useState("");
   const [editMessage, setEditMessage] = useState("");
   const [editSummary, setEditSummary] = useState("");
-  const [editTechStack, setEditTechStack] = useState<string[]>([]);
+  const [_editTechStack, setEditTechStack] = useState<string[]>([]);
+  const [editTechStackInput, setEditTechStackInput] = useState("");
   const [editGitHubLink, setEditGitHubLink] = useState("");
   const [editLiveLink, setEditLiveLink] = useState("");
   const [editFileUrl, setEditFileUrl] = useState("");
@@ -100,7 +101,10 @@ const TestimonialsEdit = () => {
         projectName: newName,
         description: newMessage,
         problemSolve: newSummary,
-        techStack: newTechStack,
+        techStack: newTechStackInput
+          .split(",")
+          .map((s) => s.trim())
+          .filter(Boolean),
         gitHubLink: newGitHubLink,
         liveLink: newLiveLink,
         imageUrl: fileUrl,
@@ -113,7 +117,7 @@ const TestimonialsEdit = () => {
       setNewName("");
       setNewMessage("");
       setNewSummary("");
-      setNewTechStack([]);
+      setNewTechStackInput("");
       setNewGitHubLink("");
       setNewLiveLink("");
       setNewFileUrl("");
@@ -137,6 +141,7 @@ const TestimonialsEdit = () => {
     setEditMessage(testimonialObj.description);
     setEditSummary(testimonialObj.problemSolve || "");
     setEditTechStack(testimonialObj.techStack || []);
+    setEditTechStackInput((testimonialObj.techStack || []).join(", "));
     setEditGitHubLink(testimonialObj.gitHubLink || "");
     setEditLiveLink(testimonialObj.liveLink || "");
     setEditFileUrl(testimonialObj.imageUrl);
@@ -150,6 +155,7 @@ const TestimonialsEdit = () => {
     setEditMessage("");
     setEditSummary("");
     setEditTechStack([]);
+    setEditTechStackInput("");
     setEditGitHubLink("");
     setEditLiveLink("");
     setEditFileUrl("");
@@ -182,7 +188,10 @@ const TestimonialsEdit = () => {
         projectName: editName,
         description: editMessage,
         problemSolve: editSummary,
-        techStack: editTechStack,
+        techStack: editTechStackInput
+          .split(",")
+          .map((s) => s.trim())
+          .filter(Boolean),
         gitHubLink: editGitHubLink,
         liveLink: editLiveLink,
         imageUrl: fileUrl,
@@ -270,15 +279,8 @@ const TestimonialsEdit = () => {
           label={testimonialsEditTxt.techStack}
           placeholder={testimonialsEditTxt.techStackPlaceholder}
           type="text"
-          val={newTechStack.join(", ")}
-          setVal={(v: string) =>
-            setNewTechStack(
-              v
-                .split(",")
-                .map((s) => s.trim())
-                .filter(Boolean)
-            )
-          }
+          val={newTechStackInput}
+          setVal={setNewTechStackInput}
         />
         <Input
           label={testimonialsEditTxt.gitHubLink}
@@ -368,15 +370,8 @@ const TestimonialsEdit = () => {
                 label={testimonialsEditTxt.techStack}
                 placeholder={testimonialsEditTxt.techStackPlaceholder}
                 type="text"
-                val={editTechStack.join(", ")}
-                setVal={(v: string) =>
-                  setEditTechStack(
-                    v
-                      .split(",")
-                      .map((s) => s.trim())
-                      .filter(Boolean)
-                  )
-                }
+                val={editTechStackInput}
+                setVal={setEditTechStackInput}
               />
               <Input
                 label={testimonialsEditTxt.gitHubLink}

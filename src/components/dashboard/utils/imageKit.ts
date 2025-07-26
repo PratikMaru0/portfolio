@@ -64,10 +64,15 @@ const imageKit = () => {
     }
   };
 
+  function isVideo(url: string) {
+    return /\.(mp4|webm|ogg|mov|m4v)(\?.*)?$/i.test(url);
+  }
+
   return {
     handleUpload,
     deleteFile,
     authenticator,
+    isVideo,
   };
 };
 
