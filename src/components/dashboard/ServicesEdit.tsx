@@ -10,7 +10,7 @@ import servicesEditTxt from "./texts/servicesEditTxt";
 import FileUpload from "./common/FileUpload";
 import imageKit from "./utils/imageKit";
 import Confirm from "../common/Confirm";
-import ActionButton from "../common/ActionButton";
+import PillEdit from "./common/PillEdit";
 
 interface Service {
   _id?: string;
@@ -260,46 +260,25 @@ const ServicesEdit = () => {
             </div>
           )}
           {services.map((serviceObj, idx) => (
-            <li
+            <PillEdit
               key={serviceObj._id || idx}
-              className="flex items-center bg-primary/10 border border-primary/70 px-3 py-1 rounded shadow text-xs gap-2"
-            >
-              <span className="truncate max-w-[120px]">
-                {serviceObj.service}
-              </span>
-              {serviceObj.icon && (
-                <img
-                  src={serviceObj.icon}
-                  alt="icon"
-                  className="w-6 h-6 ml-2 rounded-full object-cover border"
-                />
-              )}
-
-              <ActionButton
-                text={"✏️"}
-                onClick={() => {
-                  setOpenEditModal(true);
-                  handleEdit(idx, serviceObj);
-                }}
-                disabled={loading}
-                style=" border-none px-0 py-0"
-              />
-
-              <ActionButton
-                text={"❌"}
-                onClick={() => {
-                  setConfirmModalOpen(true);
-                  setDeleteService({
-                    service: serviceObj,
-                    idx,
-                  });
-                }}
-                disabled={loading}
-                style="border-none px-0 py-0"
-              />
-            </li>
+              idx={idx}
+              link={serviceObj.service}
+              mediaUrl={serviceObj.icon}
+              loading={loading}
+              ariaLabel={servicesEditTxt.removeServiceAriaLabel}
+              onEdit={() => {
+                setOpenEditModal(true);
+                handleEdit(idx, serviceObj);
+              }}
+              onDelete={() => {
+                setConfirmModalOpen(true);
+                setDeleteService({ service: serviceObj, idx });
+              }}
+            />
           ))}
         </ul>
+
         {openEditModal && editingIdx !== null && (
           <CardModal
             openModal={openEditModal}

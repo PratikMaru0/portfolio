@@ -9,7 +9,7 @@ import homeEditTxt from "./texts/homeEditTxt";
 import FileUpload from "./common/FileUpload";
 import imageKit from "./utils/imageKit";
 import Confirm from "../common/Confirm";
-import ActionButton from "../common/ActionButton";
+import PillEdit from "./common/PillEdit";
 
 const HomeEdit = () => {
   const [firstName, setFirstName] = useState("");
@@ -63,7 +63,7 @@ const HomeEdit = () => {
     fetchHomeDetails();
   }, [dispatch]);
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (updatedSocialMediaLinks?: string[]) => {
     try {
       setLoading(true);
 
@@ -108,7 +108,7 @@ const HomeEdit = () => {
           shortIntro,
           resumeUrl: finalResumeUrl,
           resumeFileId: finalResumeFileId,
-          socialMediaLinks,
+          socialMediaLinks: updatedSocialMediaLinks || socialMediaLinks,
         },
         { withCredentials: true }
       );
@@ -116,6 +116,7 @@ const HomeEdit = () => {
       dispatch(
         addAlertMsg({ message: res.data.message, status: res.data.status })
       );
+      setSocialMediaLinks(updatedSocialMediaLinks || []);
     } catch (err: any) {
       dispatch(
         addAlertMsg({
@@ -130,14 +131,19 @@ const HomeEdit = () => {
 
   const handleAddSocialLink = () => {
     if (newSocialLink && !socialMediaLinks.includes(newSocialLink)) {
-      setSocialMediaLinks([...socialMediaLinks, newSocialLink]);
-
+      const updatedSocialMediaLinks = [...socialMediaLinks, newSocialLink];
+      // setSocialMediaLinks(updatedSocialMediaLinks);
+      handleSubmit(updatedSocialMediaLinks);
       setNewSocialLink("");
     }
   };
 
   const handleRemoveSocialLink = (idx: number) => {
-    setSocialMediaLinks(socialMediaLinks.filter((_, i) => i !== idx));
+    const updatedSocialMediaLinks = socialMediaLinks.filter(
+      (_, i) => i !== idx
+    );
+    setSocialMediaLinks(updatedSocialMediaLinks);
+    handleSubmit(updatedSocialMediaLinks);
     setConfirmModalOpen(false);
   };
 
@@ -249,22 +255,18 @@ const HomeEdit = () => {
                 </li>
               </div>
             )}
-            {socialMediaLinks.map((link, idx) => (
-              <li
-                key={idx}
-                className="flex items-center bg-primary/10 border border-primary/70 px-3 py-1 rounded shadow text-xs"
-              >
-                <span className="truncate max-w-[120px]">{link}</span>
-                <ActionButton
-                  text={"❌"}
-                  onClick={() => {
-                    setConfirmModalOpen(true);
-                    setIdx(idx);
-                  }}
-                  aria-label={homeEditTxt.removeSocialLinkAria}
-                  style="ml-2"
-                />
-              </li>
+            {socialMediaLinks.map((link, index) => (
+              <PillEdit
+                key={index}
+                idx={index}
+                link={link}
+                loading={loading}
+                ariaLabel={homeEditTxt.removeSocialLinkAria}
+                onDelete={(idx: number) => {
+                  setConfirmModalOpen(true);
+                  setIdx(idx);
+                }}
+              />
             ))}
           </ul>
         </div>

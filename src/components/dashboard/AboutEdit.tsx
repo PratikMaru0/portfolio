@@ -10,7 +10,7 @@ import aboutEditTxt from "./texts/aboutEditTxt";
 import FileUpload from "./common/FileUpload";
 import imageKit from "./utils/imageKit";
 import Confirm from "../common/Confirm";
-import ActionButton from "../common/ActionButton";
+import PillEdit from "./common/PillEdit";
 interface Skill {
   _id?: string;
   skill: string;
@@ -224,31 +224,22 @@ const AboutEdit = () => {
               </div>
             )}
             {skills.map((skillObj, idx) => (
-              <li
+              <PillEdit
                 key={skillObj._id || idx}
-                className="flex items-center bg-primary/10 border border-primary/70 px-3 py-1 rounded shadow text-xs"
-              >
-                <span className="truncate max-w-[120px]">{skillObj.skill}</span>
-                {skillObj.icon && (
-                  <img
-                    src={skillObj.icon}
-                    alt="icon"
-                    className="w-6 h-6 ml-2 rounded-full object-cover border mx-2"
-                  />
-                )}
-                <ActionButton
-                  text={"❌"}
-                  onClick={() => {
-                    setDeleteSkill({
-                      idx, // include index for correct removal
-                      skill: skillObj,
-                      icon: skillObj.icon,
-                    });
-                    setConfirmModalOpen(true);
-                  }}
-                  disabled={addLoading}
-                />
-              </li>
+                idx={idx}
+                link={skillObj.skill}
+                mediaUrl={skillObj.icon}
+                loading={addLoading}
+                ariaLabel={aboutEditTxt.removeSkillAria}
+                onDelete={() => {
+                  setDeleteSkill({
+                    idx,
+                    skill: skillObj,
+                    icon: skillObj.icon,
+                  });
+                  setConfirmModalOpen(true);
+                }}
+              />
             ))}
           </ul>
         </div>

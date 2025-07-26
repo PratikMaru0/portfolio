@@ -13,7 +13,7 @@ const servicesEditTxt = {
   updateSuccess: "Service details updated successfully!",
   updateError: "Failed to update service details",
   fetchError: "Failed to fetch service details",
-  removeServiceAria: "Remove Service",
+  removeServiceAriaLabel: "Remove Service",
   iconLink: "https://icons8.com/icons",
   deleteConfirm: "Are you sure you want to delete this service?",
   requiredField: "Name, description and icon are required",

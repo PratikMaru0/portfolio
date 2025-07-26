@@ -10,7 +10,7 @@ import testimonialsEditTxt from "./texts/testimonialsEditTxt";
 import FileUpload from "./common/FileUpload";
 import imageKit from "./utils/imageKit";
 import Confirm from "../common/Confirm";
-import ActionButton from "../common/ActionButton";
+import PillEdit from "./common/PillEdit";
 
 interface Testimonial {
   _id?: string;
@@ -307,59 +307,33 @@ const TestimonialsEdit = () => {
           disabled={loading}
         />
         <ul className="flex flex-wrap gap-2">
-          {testimonials.length === 0 && (
+          {testimonials.length === 0 ? (
             <div className="w-full justify-center">
               <li className="text-xs text-center italic">
                 {testimonialsEditTxt.emptyList}
               </li>
             </div>
-          )}
-          {testimonials.map((testimonialObj, idx) => (
-            <li
-              key={testimonialObj._id || idx}
-              className="flex items-center bg-primary/10 border border-primary/70 px-3 py-1 rounded shadow text-xs gap-2"
-            >
-              <span className="truncate max-w-[120px]">
-                {testimonialObj.projectName}
-              </span>
-              {testimonialObj.imageUrl &&
-                (testimonialObj.imageUrl.match(/\.(mp4|webm|ogg)$/i) ? (
-                  <video
-                    src={testimonialObj.imageUrl}
-                    className="w-10 h-10 ml-2 rounded object-cover border"
-                    controls
-                  />
-                ) : (
-                  <img
-                    src={testimonialObj.imageUrl}
-                    alt={testimonialsEditTxt.altImageTxt}
-                    className="w-10 h-10 ml-2 rounded object-cover border"
-                  />
-                ))}
-              <ActionButton
-                text={"✏️"}
-                onClick={() => {
+          ) : (
+            testimonials.map((testimonialObj, idx) => (
+              <PillEdit
+                key={testimonialObj._id || idx}
+                idx={idx}
+                link={testimonialObj.projectName}
+                mediaUrl={testimonialObj.imageUrl}
+                loading={loading}
+                onEdit={() => {
                   setOpenEditModal(true);
                   handleEdit(idx, testimonialObj);
                 }}
-                disabled={loading}
-                style=" border-none px-0 py-0"
-              />
-              <ActionButton
-                text={"❌"}
-                onClick={() => {
+                onDelete={() => {
                   setConfirmModalOpen(true);
-                  setDeleteTestimonial({
-                    testimonial: testimonialObj,
-                    idx,
-                  });
+                  setDeleteTestimonial({ testimonial: testimonialObj, idx });
                 }}
-                disabled={loading}
-                style="border-none px-0 py-0"
               />
-            </li>
-          ))}
+            ))
+          )}
         </ul>
+
         {openEditModal && editingIdx !== null && (
           <CardModal
             openModal={openEditModal}
