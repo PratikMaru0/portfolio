@@ -1,12 +1,14 @@
 import React from "react";
 import SideBar from "../components/dashboard/SideBar";
 import { Outlet } from "react-router-dom";
+import ScrollToTop from "../components/ScrollToTop";
 
 const Dashboard = () => {
   const [isSideBarOpen, setIsSideBarOpen] = React.useState(false);
 
   return (
     <div>
+      <ScrollToTop />
       {!isSideBarOpen && (
         <button
           data-drawer-target="default-sidebar"
