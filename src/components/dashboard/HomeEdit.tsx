@@ -16,21 +16,21 @@ const HomeEdit = () => {
   const [lastName, setLastName] = useState("");
   const [emailId, setEmailId] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [profilePicUrl, setProfilePicUrl] = useState("");
-  const [profilePicFileId, setProfilePicFileId] = useState("");
+  const [profilePic, setProfilePic] = useState<string>("");
+  const [profilePicFileId, setProfilePicFileId] = useState<string>("");
   const [tagline, setTagline] = useState("");
   const [shortIntro, setShortIntro] = useState("");
   const [resumeUrl, setResumeUrl] = useState("");
+  const [resumeFileId, setResumeFileId] = useState<string>("");
   const [socialMediaLinks, setSocialMediaLinks] = useState<string[]>([]);
   const [newSocialLink, setNewSocialLink] = useState("");
   const [loading, setLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const fileInputRefResume = useRef<HTMLInputElement>(null);
-  const [resumeFileId, setResumeFileId] = useState("");
+  const resumeInputRef = useRef<HTMLInputElement>(null);
   const [idx, setIdx] = useState(-1);
   const [confirmModalOpen, setConfirmModalOpen] = useState(false);
-  const { handleUpload } = imageKit();
 
+  const { handleUpload, deleteFile } = imageKit();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -45,16 +45,19 @@ const HomeEdit = () => {
         setLastName(data.lastName || "");
         setEmailId(data.emailId || "");
         setPhoneNumber(data.phoneNumber || "");
-        setProfilePicUrl(data.profilePicUrl || "");
+        setProfilePic(data.profilePicUrl || "");
         setProfilePicFileId(data.profilePicFileId || "");
-        setResumeFileId(data.resumeFileId || "");
         setTagline(data.tagline || "");
         setShortIntro(data.shortIntro || "");
         setResumeUrl(data.resumeUrl || "");
+        setResumeFileId(data.resumeFileId || "");
         setSocialMediaLinks(data.socialMediaLinks || []);
       } catch (err: any) {
         dispatch(
-          addAlertMsg({ message: err.response.data.error, status: err.status })
+          addAlertMsg({
+            message: err.response?.data?.error,
+            status: err.status || 400,
+          })
         );
       } finally {
         setLoading(false);
@@ -67,55 +70,71 @@ const HomeEdit = () => {
     try {
       setLoading(true);
 
-      let finalProfilePicUrl = profilePicUrl;
-      let finalProfilePicFileId = profilePicFileId;
-      let finalResumeUrl = resumeUrl;
-      let finalResumeFileId = resumeFileId;
-      const uploadResponse = await handleUpload(
-        fileInputRef,
-        profilePicFileId,
-        resumeFileId
-      );
-      if (uploadResponse?.url && uploadResponse?.fileId) {
-        finalProfilePicUrl = uploadResponse.url;
-        finalProfilePicFileId = uploadResponse.fileId;
-        setProfilePicUrl(uploadResponse.url);
-        setProfilePicFileId(uploadResponse.fileId);
+      if (!firstName || !lastName || !emailId || !phoneNumber || !shortIntro) {
+        dispatch(
+          addAlertMsg({
+            message: "All required fields must be filled",
+            status: 400,
+          })
+        );
+        return;
       }
 
-      const uploadResponseResume = await handleUpload(
-        fileInputRefResume,
-        profilePicFileId,
-        resumeFileId
-      );
-      if (uploadResponseResume?.url && uploadResponseResume?.fileId) {
-        finalResumeUrl = uploadResponseResume.url;
-        finalResumeFileId = uploadResponseResume.fileId;
-        setResumeUrl(uploadResponseResume.url);
-        setResumeFileId(uploadResponseResume.fileId);
+      let iconUrl = profilePic;
+      let iconFileId = profilePicFileId;
+      let resumeLink = resumeUrl;
+      let resumeFile = resumeFileId;
+
+      // Upload new profile pic if selected
+      if (fileInputRef.current && fileInputRef.current.files?.length) {
+        if (profilePicFileId) {
+          await deleteFile(profilePicFileId);
+        }
+        const uploadResponse = await handleUpload(fileInputRef);
+        if (uploadResponse?.url && uploadResponse?.fileId) {
+          iconUrl = uploadResponse.url;
+          iconFileId = uploadResponse.fileId;
+        }
       }
 
-      const res = await axios.patch(
-        `${BASE_URL}/profile`,
-        {
-          firstName,
-          lastName,
-          emailId,
-          phoneNumber,
-          profilePicUrl: finalProfilePicUrl,
-          profilePicFileId: finalProfilePicFileId,
-          tagline,
-          shortIntro,
-          resumeUrl: finalResumeUrl,
-          resumeFileId: finalResumeFileId,
-          socialMediaLinks: updatedSocialMediaLinks || socialMediaLinks,
-        },
-        { withCredentials: true }
-      );
+      // Upload new resume if selected
+      if (resumeInputRef.current && resumeInputRef.current.files?.length) {
+        if (resumeFileId) {
+          await deleteFile(resumeFileId);
+        }
+        const uploadResponse = await handleUpload(resumeInputRef);
+        if (uploadResponse?.url && uploadResponse?.fileId) {
+          resumeLink = uploadResponse.url;
+          resumeFile = uploadResponse.fileId;
+        }
+      }
+
+      const payload = {
+        firstName,
+        lastName,
+        emailId,
+        phoneNumber,
+        tagline,
+        shortIntro,
+        resumeUrl: resumeLink,
+        resumeFileId: resumeFile,
+        profilePicUrl: iconUrl,
+        profilePicFileId: iconFileId,
+        socialMediaLinks: updatedSocialMediaLinks || socialMediaLinks,
+      };
+
+      const res = await axios.patch(`${BASE_URL}/profile`, payload, {
+        withCredentials: true,
+      });
 
       dispatch(
         addAlertMsg({ message: res.data.message, status: res.data.status })
       );
+
+      setProfilePic(iconUrl);
+      setProfilePicFileId(iconFileId);
+      setResumeUrl(resumeLink);
+      setResumeFileId(resumeFile);
       setSocialMediaLinks(updatedSocialMediaLinks || []);
     } catch (err: any) {
       dispatch(
@@ -132,7 +151,6 @@ const HomeEdit = () => {
   const handleAddSocialLink = () => {
     if (newSocialLink && !socialMediaLinks.includes(newSocialLink)) {
       const updatedSocialMediaLinks = [...socialMediaLinks, newSocialLink];
-      // setSocialMediaLinks(updatedSocialMediaLinks);
       handleSubmit(updatedSocialMediaLinks);
       setNewSocialLink("");
     }
@@ -191,25 +209,17 @@ const HomeEdit = () => {
         <FileUpload
           label={homeEditTxt.profilePicUrlLabel}
           fileInputRef={fileInputRef}
-          currentUrl={profilePicUrl}
-          setProfilePicUrl={setProfilePicUrl}
+          currentUrl={profilePic}
+          setProfilePicUrl={setProfilePic}
         />
 
         <FileUpload
           label={homeEditTxt.resumeUrlLabel}
-          fileInputRef={fileInputRefResume}
+          fileInputRef={resumeInputRef}
           currentUrl={resumeUrl}
           setProfilePicUrl={setResumeUrl}
         />
 
-        <Input
-          label={homeEditTxt.resumeUrlLabel}
-          placeholder={homeEditTxt.resumeUrlPlaceholder}
-          type="text"
-          val={resumeUrl}
-          setVal={setResumeUrl}
-          required
-        />
         <Input
           label={homeEditTxt.shortIntroLabel}
           placeholder={homeEditTxt.shortIntroPlaceholder}
@@ -225,6 +235,7 @@ const HomeEdit = () => {
           val={tagline}
           setVal={setTagline}
         />
+
         <div>
           <label className="block font-medium mb-1">
             {homeEditTxt.socialMediaLinksLabel}{" "}
@@ -278,12 +289,13 @@ const HomeEdit = () => {
           title={homeEditTxt.confirmModalTitle}
           note={homeEditTxt.confirmModalNote}
         />
+
         <Button
           text={loading ? <Loader /> : homeEditTxt.saveBtn}
           type="submit"
           style="w-full mt-4"
           disabled={loading}
-          onClick={handleSubmit}
+          onClick={() => handleSubmit()}
         />
       </div>
     </div>
