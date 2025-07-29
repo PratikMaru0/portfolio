@@ -21,7 +21,7 @@ const SideBar = ({ style, setIsSideBarOpen }: sidebarProps) => {
         data-drawer-toggle="default-sidebar"
         aria-controls="default-sidebar"
         type="button"
-        className="inline-flex items-center p-2 mt-2 ms-3 text-sm text-themeText rounded-lg sm:block md:hidden"
+        className="inline-flex items-center p-2 mt-2 ms-3 text-sm text-themeText rounded-lg sm:block md:hidden "
         onClick={() => {
           setIsSideBarOpen(false);
         }}
@@ -51,7 +51,7 @@ const SideBar = ({ style, setIsSideBarOpen }: sidebarProps) => {
       <div className="h-full px-3 py-4 overflow-y-auto">
         <ul className="space-y-2 font-medium">
           {sideBarTxt.navigation.map((item, index) => (
-            <li key={index}>
+            <li key={index} onClick={() => setIsSideBarOpen(false)}>
               <Link
                 to={item.path}
                 className={`flex items-center p-2 rounded-lg group hover:bg-primary/10 ${

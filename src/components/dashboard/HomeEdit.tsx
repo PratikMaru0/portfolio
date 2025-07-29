@@ -22,11 +22,25 @@ const HomeEdit = () => {
   const [shortIntro, setShortIntro] = useState("");
   const [resumeUrl, setResumeUrl] = useState("");
   const [resumeFileId, setResumeFileId] = useState<string>("");
-  const [socialMediaLinks, setSocialMediaLinks] = useState<string[]>([]);
+  const [socialMediaIconUrl, setSocialMediaIconUrl] = useState<string>("");
+  const [socialMediaIconFileId, setSocialMediaIconFileId] =
+    useState<string>("");
+
+  type SocialMediaLink = {
+    url: string;
+    icon: string;
+    iconFileId?: string;
+  };
+
+  const [socialMediaLinks, setSocialMediaLinks] = useState<SocialMediaLink[]>(
+    []
+  );
   const [newSocialLink, setNewSocialLink] = useState("");
   const [loading, setLoading] = useState(false);
+  const [socialMediaLoading, setSocialMediaLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const resumeInputRef = useRef<HTMLInputElement>(null);
+  const socialMediaFileInputRef = useRef<HTMLInputElement>(null);
   const [idx, setIdx] = useState(-1);
   const [confirmModalOpen, setConfirmModalOpen] = useState(false);
 
@@ -66,7 +80,13 @@ const HomeEdit = () => {
     fetchHomeDetails();
   }, [dispatch]);
 
-  const handleSubmit = async (updatedSocialMediaLinks?: string[]) => {
+  const handleSubmit = async (
+    updatedSocialMediaLinks?: {
+      url: string;
+      icon: string;
+      iconFileId?: string;
+    }[]
+  ) => {
     try {
       setLoading(true);
 
@@ -85,11 +105,8 @@ const HomeEdit = () => {
       let resumeLink = resumeUrl;
       let resumeFile = resumeFileId;
 
-      // Upload new profile pic if selected
       if (fileInputRef.current && fileInputRef.current.files?.length) {
-        if (profilePicFileId) {
-          await deleteFile(profilePicFileId);
-        }
+        if (profilePicFileId) await deleteFile(profilePicFileId);
         const uploadResponse = await handleUpload(fileInputRef);
         if (uploadResponse?.url && uploadResponse?.fileId) {
           iconUrl = uploadResponse.url;
@@ -97,11 +114,8 @@ const HomeEdit = () => {
         }
       }
 
-      // Upload new resume if selected
       if (resumeInputRef.current && resumeInputRef.current.files?.length) {
-        if (resumeFileId) {
-          await deleteFile(resumeFileId);
-        }
+        if (resumeFileId) await deleteFile(resumeFileId);
         const uploadResponse = await handleUpload(resumeInputRef);
         if (uploadResponse?.url && uploadResponse?.fileId) {
           resumeLink = uploadResponse.url;
@@ -148,21 +162,78 @@ const HomeEdit = () => {
     }
   };
 
-  const handleAddSocialLink = () => {
-    if (newSocialLink && !socialMediaLinks.includes(newSocialLink)) {
-      const updatedSocialMediaLinks = [...socialMediaLinks, newSocialLink];
-      handleSubmit(updatedSocialMediaLinks);
-      setNewSocialLink("");
+  const handleAddSocialLink = async () => {
+    try {
+      setSocialMediaLoading(true);
+      if (
+        newSocialLink &&
+        !socialMediaLinks.some((link) => link.url === newSocialLink)
+      ) {
+        let iconUrl = socialMediaIconUrl;
+        let iconFileId = socialMediaIconFileId;
+
+        if (
+          socialMediaFileInputRef.current &&
+          socialMediaFileInputRef.current.files?.length
+        ) {
+          const uploadResponse = await handleUpload(socialMediaFileInputRef);
+          if (uploadResponse?.url && uploadResponse?.fileId) {
+            iconUrl = uploadResponse.url;
+            iconFileId = uploadResponse.fileId;
+          }
+        }
+
+        const updatedSocialMediaLinks: SocialMediaLink[] = [
+          ...socialMediaLinks,
+          {
+            url: newSocialLink,
+            icon: iconUrl,
+            iconFileId: iconFileId,
+          },
+        ];
+        setSocialMediaLinks(updatedSocialMediaLinks);
+        handleSubmit(updatedSocialMediaLinks);
+        setNewSocialLink("");
+        setSocialMediaIconUrl("");
+        setSocialMediaIconFileId("");
+        if (socialMediaFileInputRef.current)
+          socialMediaFileInputRef.current.value = "";
+      }
+    } catch (err: any) {
+      dispatch(
+        addAlertMsg({
+          message: err.response?.data?.error || "Upload failed",
+          status: err.status || 400,
+        })
+      );
+    } finally {
+      setSocialMediaLoading(false);
     }
   };
 
-  const handleRemoveSocialLink = (idx: number) => {
-    const updatedSocialMediaLinks = socialMediaLinks.filter(
-      (_, i) => i !== idx
-    );
-    setSocialMediaLinks(updatedSocialMediaLinks);
-    handleSubmit(updatedSocialMediaLinks);
-    setConfirmModalOpen(false);
+  const handleRemoveSocialLink = async (idx: number) => {
+    try {
+      setConfirmModalOpen(false);
+      setLoading(true);
+      if (socialMediaLinks[idx].iconFileId) {
+        await deleteFile(socialMediaLinks[idx].iconFileId);
+      }
+      const updatedSocialMediaLinks = socialMediaLinks.filter(
+        (_, i) => i !== idx
+      );
+      setSocialMediaLinks(updatedSocialMediaLinks);
+      handleSubmit(updatedSocialMediaLinks);
+      setConfirmModalOpen(false);
+    } catch (err: any) {
+      dispatch(
+        addAlertMsg({
+          message: err.response?.data?.error || "Remove failed",
+          status: err.status || 400,
+        })
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -212,7 +283,6 @@ const HomeEdit = () => {
           currentUrl={profilePic}
           setProfilePicUrl={setProfilePic}
         />
-
         <FileUpload
           label={homeEditTxt.resumeUrlLabel}
           fileInputRef={resumeInputRef}
@@ -243,21 +313,29 @@ const HomeEdit = () => {
               {homeEditTxt.socialMediaLinksOptional}
             </span>
           </label>
-          <div className="flex gap-2 mb-2">
+          <div className="flex gap-2 mb-2 flex-col ">
             <Input
               placeholder={homeEditTxt.addSocialLinkPlaceholder}
               type="text"
               val={newSocialLink}
               setVal={setNewSocialLink}
             />
+            <FileUpload
+              fileInputRef={socialMediaFileInputRef}
+              currentUrl={socialMediaIconUrl}
+              setProfilePicUrl={setSocialMediaIconUrl}
+            />
             <Button
-              text={homeEditTxt.addSocialLinkBtn}
+              text={
+                socialMediaLoading ? <Loader /> : homeEditTxt.addSocialLinkBtn
+              }
               type="button"
-              style="px-4"
+              style="px-4 mx-0 md:mx-4"
               onClick={handleAddSocialLink}
-              disabled={!newSocialLink}
+              disabled={socialMediaLoading}
             />
           </div>
+
           <ul className="flex flex-wrap gap-2">
             {socialMediaLinks.length === 0 && (
               <div className="w-full justify-center">
@@ -266,19 +344,22 @@ const HomeEdit = () => {
                 </li>
               </div>
             )}
-            {socialMediaLinks.map((link, index) => (
-              <PillEdit
-                key={index}
-                idx={index}
-                link={link}
-                loading={loading}
-                ariaLabel={homeEditTxt.removeSocialLinkAria}
-                onDelete={(idx: number) => {
-                  setConfirmModalOpen(true);
-                  setIdx(idx);
-                }}
-              />
-            ))}
+            {socialMediaLinks
+              .filter((link) => link.url)
+              .map((link, index) => (
+                <PillEdit
+                  key={index}
+                  idx={index}
+                  link={link.url}
+                  mediaUrl={link.icon}
+                  loading={loading}
+                  ariaLabel={homeEditTxt.removeSocialLinkAria}
+                  onDelete={() => {
+                    setConfirmModalOpen(true);
+                    setIdx(index);
+                  }}
+                />
+              ))}
           </ul>
         </div>
 

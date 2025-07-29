@@ -3,6 +3,7 @@ import { Button } from "../components/common";
 import { BASE_URL } from "../utils/constants";
 import heroTxt from "../constants/texts/heroTxt";
 import { useNavigate } from "react-router-dom";
+import SocialMediaLinks from "../components/SocialMediaLinks";
 
 const Hero = () => {
   const [profile, setProfile] = useState({
@@ -12,6 +13,7 @@ const Hero = () => {
     tagline: "",
     shortIntro: "",
     resumeUrl: "",
+    socialMediaLinks: [],
   });
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -31,6 +33,7 @@ const Hero = () => {
           tagline: data.data?.tagline || "",
           shortIntro: data.data?.shortIntro || "",
           resumeUrl: data.data?.resumeUrl || "",
+          socialMediaLinks: data.data?.socialMediaLinks || [],
         });
       } catch (err) {
         console.log(err);
@@ -87,10 +90,12 @@ const Hero = () => {
         />
         <Button
           text={heroTxt.resume}
-          style="w-full sm:w-auto text-center border border-primary/20 rounded-full px-8 py-3 text-base  bg-themeBackground transition hover:bg-primary/10"
+          style="w-full sm:w-auto text-center border border-primary rounded-full px-8 py-3 text-base  bg-themeBackground transition hover:bg-primary/20"
           onClick={() => window.open(profile.resumeUrl, "_blank")}
         />
       </div>
+
+      <SocialMediaLinks socialMediaLinks={profile.socialMediaLinks} />
     </section>
   );
 };

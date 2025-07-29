@@ -36,7 +36,9 @@ const Dashboard = () => {
         </button>
       )}
       <SideBar
-        style={`${isSideBarOpen ? "block" : "hidden"} md:block`}
+        style={`${
+          isSideBarOpen ? "block" : "hidden"
+        } md:block bg-themeBackground`}
         setIsSideBarOpen={setIsSideBarOpen}
       />
       <div className="p-4 sm:ml-40 overflow-y-auto">
