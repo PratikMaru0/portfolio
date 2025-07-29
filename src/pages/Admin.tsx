@@ -69,7 +69,7 @@ const Admin = () => {
   }, [admin, setEmail]);
 
   const dashboardNavigation = () => {
-    navigate("/dashboard/home/edit");
+    navigate("/admin/dashboard/home/edit");
   };
 
   if (!admin) {

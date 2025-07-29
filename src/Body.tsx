@@ -77,7 +77,7 @@ const Body = () => {
           element: <Admin />,
         },
         {
-          path: "/dashboard",
+          path: "/admin/dashboard",
           element: <Dashboard />,
           children: [
             {

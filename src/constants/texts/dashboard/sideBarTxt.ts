@@ -3,19 +3,19 @@ const sideBarTxt = {
   navigation: [
     {
       text: "Home",
-      path: "/dashboard/home/edit",
+      path: "/admin/dashboard/home/edit",
     },
     {
       text: "About me",
-      path: "/dashboard/about/edit",
+      path: "/admin/dashboard/about/edit",
     },
     {
       text: "Services",
-      path: "/dashboard/services/edit",
+      path: "/admin/dashboard/services/edit",
     },
     {
       text: "Testimonials",
-      path: "/dashboard/testimonials/edit",
+      path: "/admin/dashboard/testimonials/edit",
     },
     {
       text: "Admin Management",

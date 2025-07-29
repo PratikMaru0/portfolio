@@ -22,7 +22,7 @@ const headerTxt = {
     },
     {
       text: "Admin",
-      path: "/dashboard/home/edit",
+      path: "/admin",
     },
   ],
 };

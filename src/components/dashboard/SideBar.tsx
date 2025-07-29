@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import sideBarTxt from "../../constants/texts/dashboard/sideBarTxt";
 
 interface sidebarProps {
@@ -7,6 +7,7 @@ interface sidebarProps {
 }
 
 const SideBar = ({ style, setIsSideBarOpen }: sidebarProps) => {
+  const location = useLocation();
   return (
     <aside
       id="default-sidebar"
@@ -53,7 +54,11 @@ const SideBar = ({ style, setIsSideBarOpen }: sidebarProps) => {
             <li key={index}>
               <Link
                 to={item.path}
-                className="flex items-center p-2 rounded-lg group"
+                className={`flex items-center p-2 rounded-lg group hover:bg-primary/10 ${
+                  location.pathname === item.path
+                    ? "bg-primary/20 text-primary"
+                    : "text-themeText/80"
+                }`}
               >
                 <span className="ml-3">{item.text}</span>
               </Link>
