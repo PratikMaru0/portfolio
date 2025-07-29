@@ -1,61 +1,48 @@
 import React, { useState } from "react";
 
-interface FabAction {
-  icon: React.ReactNode;
-  label?: string;
-  onClick: () => void;
+export interface FabAction {
+  icon: string;
+  url: string;
 }
 
-interface FabProps {
-  icon?: React.ReactNode;
-  label?: string;
-  className?: string;
+export interface FabProps {
   actions?: FabAction[];
 }
 
-const Fab: React.FC<FabProps> = ({
-  icon = "+",
-  label,
-  className,
-  actions = [],
-}) => {
+const Fab: React.FC<FabProps> = ({ actions }: FabProps) => {
   const [open, setOpen] = useState(false);
 
-  const handleMainClick = () => {
-    if (actions.length > 0) setOpen((prev) => !prev);
-  };
-
-  const handleActionClick = (action: FabAction) => {
-    action.onClick();
+  const handleActionClick = () => {
     setOpen(false);
   };
 
   return (
     <div className="fixed bottom-8 right-8 z-50 flex flex-col items-end gap-3">
       {/* Options */}
-      {actions.length > 0 && open && (
-        <div className="flex flex-col items-end gap-3 mb-2">
-          {actions.map((action, idx) => (
+      {open && (
+        <div className="flex flex-col items-end gap-3 mb-2 rounded-full p-2 bg-primary/80">
+          {actions?.map((action, idx) => (
             <button
               key={idx}
-              onClick={() => handleActionClick(action)}
-              className="w-12 h-12 rounded-full bg-white text-blue-600 shadow-md flex items-center justify-center hover:bg-blue-100 transition-colors duration-200"
-              aria-label={action.label || `Option ${idx + 1}`}
+              onClick={() => handleActionClick()}
+              className="w-14 h-14 rounded-full bg-primary text-themeText shadow-md flex items-center justify-center hover:bg-primary/80 transition-colors duration-200 p-2 border border-white"
+              type="button"
             >
-              <span className="text-xl">{action.icon}</span>
+              <a href={action.url} target="_blank" rel="noopener noreferrer">
+                <img src={action.icon} alt="" />
+              </a>
             </button>
           ))}
         </div>
       )}
+
       {/* Main FAB */}
       <button
-        onClick={handleMainClick}
-        className={`w-16 h-16 rounded-full bg-blue-600 text-white shadow-lg flex items-center justify-center hover:bg-blue-700 transition-colors duration-200 focus:outline-none focus:ring-4 focus:ring-blue-300 ${
-          className || ""
-        }`}
-        aria-label={label || "Floating Action Button"}
+        onClick={() => setOpen((prev) => !prev)}
+        className={`w-16 h-16 rounded-full text-themeText shadow-lg flex items-center justify-center bg-primary/60 hover:bg-primary transition-colors duration-200 `}
+        type="button"
       >
-        <span className="text-2xl">{icon}</span>
+        <span className="text-xl">{open ? "❌" : "👀"}</span>
       </button>
     </div>
   );

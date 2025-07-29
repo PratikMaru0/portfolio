@@ -10,6 +10,7 @@ import FileUpload from "./common/FileUpload";
 import imageKit from "./utils/imageKit";
 import Confirm from "../common/Confirm";
 import PillEdit from "./common/PillEdit";
+import aboutEditTxt from "./texts/aboutEditTxt";
 
 const HomeEdit = () => {
   const [firstName, setFirstName] = useState("");
@@ -149,7 +150,9 @@ const HomeEdit = () => {
       setProfilePicFileId(iconFileId);
       setResumeUrl(resumeLink);
       setResumeFileId(resumeFile);
-      setSocialMediaLinks(updatedSocialMediaLinks || []);
+      setSocialMediaLinks(
+        res.data?.data?.socialMediaLinks || updatedSocialMediaLinks || socialMediaLinks
+      );
     } catch (err: any) {
       dispatch(
         addAlertMsg({
@@ -325,6 +328,17 @@ const HomeEdit = () => {
               currentUrl={socialMediaIconUrl}
               setProfilePicUrl={setSocialMediaIconUrl}
             />
+            <p>
+              Download icons from site :-{" "}
+              <a
+                href={aboutEditTxt.iconLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary hover:underline"
+              >
+                Link
+              </a>
+            </p>
             <Button
               text={
                 socialMediaLoading ? <Loader /> : homeEditTxt.addSocialLinkBtn
