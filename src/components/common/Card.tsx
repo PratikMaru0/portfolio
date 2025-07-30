@@ -52,7 +52,7 @@ const Card = ({ testimonial, key, onMoreInfo }: CardProps) => {
       </div>
       <div className="p-3 sm:p-4 md:p-5 lg:p-6 flex flex-col flex-1">
         <div className="flex-1">
-          <h5 className="mb-2 text-lg sm:text-xl md:text-2xl lg:text-2xl font-bold tracking-tight text-themeText line-clamp-2">
+          <h5 className="mb-2 text-md sm:text-lg md:text-xl lg:text-2xl font-bold tracking-tight text-themeText line-clamp-2">
             {testimonial.title}
           </h5>
           <p className="mb-3 font-normal text-xs sm:text-sm md:text-base lg:text-base text-themeText/70 line-clamp-3">

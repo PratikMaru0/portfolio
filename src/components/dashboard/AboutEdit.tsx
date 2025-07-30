@@ -101,6 +101,7 @@ const AboutEdit = () => {
         );
         setAboutId(res.data.abouts?._id || "");
       }
+      fetchAbout();
       dispatch(
         addAlertMsg({ message: aboutEditTxt.updateSuccess, status: 200 })
       );
@@ -112,6 +113,9 @@ const AboutEdit = () => {
   };
 
   const handleRemoveSkill = async (idx: number, skillObj: Skill) => {
+    console.log(idx, skillObj);
+
+    debugger;
     if (!aboutId || !skillObj._id) {
       setSkills(skills.filter((_, i) => i !== idx));
       return;
@@ -158,6 +162,7 @@ const AboutEdit = () => {
         );
         setAboutId(res.data.abouts?._id || "");
       }
+      fetchAbout();
       dispatch(
         addAlertMsg({ message: aboutEditTxt.updateSuccess, status: 200 })
       );

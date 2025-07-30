@@ -219,6 +219,7 @@ const ServicesEdit = () => {
           type="text"
           val={newService}
           setVal={setNewService}
+          maxLength={100}
           required
         />
         <TextArea
@@ -226,7 +227,7 @@ const ServicesEdit = () => {
           placeholder={servicesEditTxt.descriptionPlaceholder}
           val={newDescription}
           setVal={setNewDescription}
-          maxLength={500}
+          maxLength={5000}
         />
         <FileUpload
           label={servicesEditTxt.iconLabel}
@@ -285,14 +286,16 @@ const ServicesEdit = () => {
             setOpenModal={setOpenEditModal}
             modalRef={modalRef}
             title={servicesEditTxt.heading}
+            className="flex flex-col overflow-hidden max-h-[70vh] sm:max-h-[80vh]"
           >
-            <div className="flex flex-col w-full gap-5 mb-2 ">
+            <div className="flex-1 overflow-y-auto overflow-x-hidden space-y-2 sm:space-y-3 px-2 sm:px-3 pb-2 -mx-1 sm:mx-0">
               <Input
                 label={servicesEditTxt.serviceLabel}
                 placeholder={servicesEditTxt.servicePlaceholder}
                 type="text"
                 val={editService}
                 setVal={setEditService}
+                maxLength={100}
                 required
               />
               <TextArea
@@ -300,7 +303,7 @@ const ServicesEdit = () => {
                 placeholder={servicesEditTxt.descriptionPlaceholder}
                 val={editDescription}
                 setVal={setEditDescription}
-                maxLength={500}
+                maxLength={5000}
               />
               <FileUpload
                 label={servicesEditTxt.iconLabel}

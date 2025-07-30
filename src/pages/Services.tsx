@@ -68,6 +68,11 @@ const Services = () => {
           {servicesText.heading}
         </h1>
 
+        {/* Introduction Text */}
+        <div className="max-w-xs sm:max-w-lg md:max-w-2xl lg:max-w-3xl xl:max-w-4xl text-center mb-8 sm:mb-10 md:mb-12 lg:mb-16 text-sm sm:text-base md:text-lg lg:text-xl text-themeText/80 mx-auto px-2 sm:px-4 leading-relaxed">
+          {servicesText.shortIntro}
+        </div>
+
         <div className="w-full overflow-x-auto scrollbar-thin scrollbar-thumb-primary/30 scrollbar-track-transparent">
           <div className="flex flex-nowrap md:justify-center gap-4 sm:gap-6 md:gap-8 px-2 sm:px-4 pb-2 w-max min-w-full">
             {services.map((service) => (
@@ -77,7 +82,7 @@ const Services = () => {
                   setOpenModal(true);
                 }}
                 key={service._id}
-                className={`flex-shrink-0 flex flex-col items-start rounded-xl sm:rounded-2xl border border-themeText/20 bg-themeBackground shadow-custom p-4 sm:p-6 md:p-8 min-w-[240px] sm:min-w-[260px] md:min-w-[280px] max-w-[280px] sm:max-w-[300px] md:max-w-[320px] transition-all duration-300 cursor-pointer my-2 sm:my-3 group relative overflow-hidden hover:shadow-xl hover:border-primary/70 hover:scale-[1.02] sm:hover:scale-[1.03]`}
+                className={`flex-shrink-0 flex flex-col items-start rounded-xl border border-themeText/20 bg-themeBackground shadow-custom p-3 sm:p-6 md:p-8 w-[85vw] max-w-[260px] sm:min-w-[260px] md:min-w-[280px] sm:max-w-[300px] md:max-w-[360px] transition-all duration-300 cursor-pointer my-2 sm:my-3 group relative overflow-hidden hover:shadow-xl hover:border-primary/70 hover:scale-[1.02] sm:hover:scale-[1.03]`}
               >
                 <div className="mb-3 sm:mb-4 rounded-lg p-3 sm:p-4 flex items-center justify-center bg-primary/10 border border-primary/20 text-primary z-10">
                   {service.icon && (
@@ -92,13 +97,13 @@ const Services = () => {
                     />
                   )}
                 </div>
-                <div className="font-semibold text-base sm:text-lg md:text-xl mb-2 sm:mb-3 text-themeText z-10">
+                <div className="font-semibold text-sm sm:text-lg md:text-xl mb-2 sm:mb-3 text-themeText z-10">
                   {service.service}
                 </div>
-                <div className="text-sm sm:text-sm md:text-base text-themeText/70 mb-4 sm:mb-6 z-10 line-clamp-8 md:line-clamp-6">
-                  {service.description}
+                <div className="text-xs sm:text-sm md:text-base text-themeText/70 mb-3 sm:mb-6 z-10">
+                  {service.description.slice(0, 500) + "..."}
                 </div>
-                <div className="flex items-center gap-1 text-xs sm:text-sm md:text-base font-medium text-primary group-hover:gap-2 transition-all z-10">
+                <div className="flex items-center gap-1 text-xs sm:text-sm md:text-base font-medium text-primary group-hover:gap-2 transition-all z-10 mt-auto">
                   Read more
                   <span className="transition-transform group-hover:translate-x-1">
                     →
@@ -116,6 +121,7 @@ const Services = () => {
           setOpenModal={setOpenModal}
           modalRef={modalRef}
           title={selectedService.service}
+          className="flex flex-col overflow-hidden max-h-[70vh] sm:max-h-[80vh]"
         >
           {selectedService.description}
         </CardModal>
