@@ -66,16 +66,16 @@ const Testimonials = () => {
       <div className="text-center mb-2 text-sm tracking-wide opacity-70">
         {testimonialsText.heading}
       </div>
-      <h1 className="text-4xl font-bold text-center mb-4">
+      <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-4">
         {testimonialsText.subHeading}
       </h1>
-      <div className="max-w-2xl text-center mb-10 text-base opacity-80 mx-auto">
+      <div className="text-sm sm:text-base md:text-lg lg:text-xl text-center mb-10 opacity-80 mx-auto">
         {testimonialsText.introduction}
       </div>
 
       {/* Scroll container */}
       <div className="w-full overflow-x-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-transparent">
-        <div className="flex flex-nowrap md:justify-center gap-6 px-4 pb-2 w-max min-w-full">
+        <div className="flex flex-nowrap md:justify-center gap-4 sm:gap-6 lg:gap-8 px-4 pb-2 w-max min-w-full">
           {projects.map((project, idx) => {
             return (
               <Card

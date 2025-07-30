@@ -58,17 +58,22 @@ const Contact = () => {
       });
   };
   return (
-    <section className="flex flex-1 items-center justify-center">
-      <div className="max-w-2xl w-full text-center space-y-6">
+    <section className="flex flex-1 items-center justify-center px-4 py-10 sm:py-12 md:py-16">
+      <div className="max-w-xl sm:max-w-2xl w-full text-center space-y-6">
         <div className="space-y-2">
-          <p className="mt-8 text-lg">{contactTxt.subtitle}</p>
-          <h1 className="text-5xl font-serif font-semibold">
+          <p className="mt-6 text-base sm:text-lg">{contactTxt.subtitle}</p>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif font-semibold">
             {contactTxt.title}
           </h1>
-          <p className="text-base mt-2">{contactTxt.description}</p>
+          <p className="text-sm sm:text-base md:text-lg mt-2">
+            {contactTxt.description}
+          </p>
         </div>
-        <form className="mt-8 space-y-6" onSubmit={sendEmail}>
-          <div className="flex flex-col md:flex-row gap-4">
+        <form
+          className="mt-8 sm:mt-10 space-y-6 sm:space-y-8"
+          onSubmit={sendEmail}
+        >
+          <div className="flex flex-col md:flex-row gap-3 sm:gap-4 md:gap-6">
             <Input
               type="text"
               placeholder={contactTxt.namePlaceholder}

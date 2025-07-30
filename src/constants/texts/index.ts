@@ -1,6 +1,6 @@
 import headerTxt from "./headerTxt";
 import commonTxt from "./common";
-import heroTxt from "./heroTxt";
+import heroTxt from "./homeTxt";
 import contactTxt from "./contactTxt";
 import aboutTxt from "./about";
 import servicesText from "./services";

@@ -1,6 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Layout from "./components/Layout";
-import Hero from "./pages/Hero";
+import Home from "./pages/Home";
 import Contact from "./pages/Contact";
 import About from "./pages/About";
 import Services from "./pages/Services";
@@ -54,7 +54,7 @@ const Body = () => {
       children: [
         {
           path: "/",
-          element: <Hero />,
+          element: <Home />,
         },
         {
           path: "/contact",

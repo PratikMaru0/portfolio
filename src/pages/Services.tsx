@@ -50,21 +50,26 @@ const Services = () => {
   }, [openModal]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <section className="flex flex-col items-center justify-center min-h-[40vh] px-4">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-primary border-solid mb-4"></div>
+        <span className="text-primary text-lg font-medium">Loading...</span>
+      </section>
+    );
   }
 
   return (
     <>
-      <div className="flex flex-col items-center w-full pt-8">
-        <div className="text-center mb-2 text-sm tracking-wide opacity-70">
+      <section className="flex flex-col items-center w-full pt-6 pb-8 sm:pt-8 sm:pb-12 md:pt-10 md:pb-16 lg:pt-12 lg:pb-20 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-20">
+        <div className="text-center mb-3 sm:mb-4 md:mb-6 text-xs sm:text-sm md:text-base tracking-wide text-themeText/60">
           {servicesText.offerTxt}
         </div>
-        <h1 className="text-4xl font-bold text-center mb-4">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-6 sm:mb-8 md:mb-10 lg:mb-12 px-2">
           {servicesText.heading}
         </h1>
 
-        <div className="w-full overflow-x-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-transparent">
-          <div className="flex flex-nowrap md:justify-center gap-6 px-4 pb-2 w-max min-w-full">
+        <div className="w-full overflow-x-auto scrollbar-thin scrollbar-thumb-primary/30 scrollbar-track-transparent">
+          <div className="flex flex-nowrap md:justify-center gap-4 sm:gap-6 md:gap-8 px-2 sm:px-4 pb-2 w-max min-w-full">
             {services.map((service) => (
               <div
                 onClick={() => {
@@ -72,9 +77,9 @@ const Services = () => {
                   setOpenModal(true);
                 }}
                 key={service._id}
-                className={`flex-shrink-0 flex flex-col items-start rounded-2xl border border-themeText/50 bg-themeBackground shadow-custom p-8 min-w-[260px] max-w-[300px] transition-all duration-300 cursor-pointer my-3 group relative overflow-hidden hover:shadow-xl hover:border-primary/70 hover:scale-[1.03]`}
+                className={`flex-shrink-0 flex flex-col items-start rounded-xl sm:rounded-2xl border border-themeText/20 bg-themeBackground shadow-custom p-4 sm:p-6 md:p-8 min-w-[240px] sm:min-w-[260px] md:min-w-[280px] max-w-[280px] sm:max-w-[300px] md:max-w-[320px] transition-all duration-300 cursor-pointer my-2 sm:my-3 group relative overflow-hidden hover:shadow-xl hover:border-primary/70 hover:scale-[1.02] sm:hover:scale-[1.03]`}
               >
-                <div className="mb-4 rounded-lg p-4 flex items-center justify-center bg-primary/40 border border-themeText text-primary shadow-inner z-10">
+                <div className="mb-3 sm:mb-4 rounded-lg p-3 sm:p-4 flex items-center justify-center bg-primary/10 border border-primary/20 text-primary z-10">
                   {service.icon && (
                     <img
                       src={
@@ -83,17 +88,17 @@ const Services = () => {
                           : service.icon
                       }
                       alt="icon"
-                      className="w-8 h-8 object-contain"
+                      className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 object-contain"
                     />
                   )}
                 </div>
-                <div className="font-semibold text-lg mb-2 text-themeText z-10">
+                <div className="font-semibold text-base sm:text-lg md:text-xl mb-2 sm:mb-3 text-themeText z-10">
                   {service.service}
                 </div>
-                <div className="text-sm opacity-80 mb-6 text-themeText z-10 line-clamp-3">
+                <div className="text-sm sm:text-sm md:text-base text-themeText/70 mb-4 sm:mb-6 z-10 line-clamp-8 md:line-clamp-6">
                   {service.description}
                 </div>
-                <div className="flex items-center gap-1 text-sm font-medium text-primary group z-10">
+                <div className="flex items-center gap-1 text-xs sm:text-sm md:text-base font-medium text-primary group-hover:gap-2 transition-all z-10">
                   Read more
                   <span className="transition-transform group-hover:translate-x-1">
                     →
@@ -103,7 +108,7 @@ const Services = () => {
             ))}
           </div>
         </div>
-      </div>
+      </section>
 
       {openModal && selectedService && (
         <CardModal

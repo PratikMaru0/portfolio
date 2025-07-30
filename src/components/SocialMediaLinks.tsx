@@ -1,7 +1,7 @@
 import Fab from "./Fab";
 
 interface SocialMediaLinksProps {
-  socialMediaLinks: [];
+  socialMediaLinks: any[];
 }
 
 const SocialMediaLinks = ({ socialMediaLinks }: SocialMediaLinksProps) => {

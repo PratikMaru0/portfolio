@@ -7,6 +7,7 @@ interface cardModalProps {
   modalRef: React.RefObject<HTMLDivElement | null>;
   title: string;
   children: React.ReactNode;
+  className?: string;
 }
 const CardModal = ({
   openModal,
@@ -14,6 +15,7 @@ const CardModal = ({
   modalRef,
   title,
   children,
+  className = "",
 }: cardModalProps) => {
   useEffect(() => {
     if (openModal) {
@@ -26,10 +28,10 @@ const CardModal = ({
     };
   }, [openModal]);
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-themeBackground/80 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-themeBackground/90 backdrop-blur-sm p-2 sm:p-4">
       <div
         ref={modalRef}
-        className="bg-themeBackground border border-border rounded-xl shadow-lg w-full max-w-2xl max-h-[90vh] p-6 md:p-8 mx-4 text-themeText flex flex-col "
+        className={`bg-themeBackground border border-border rounded-xl shadow-lg w-full max-w-2xl max-h-[85vh] sm:max-h-[80vh] p-4 sm:p-6 md:p-8 mx-2 sm:mx-4 text-themeText flex flex-col transform transition-all duration-300 ease-out ${className}`}
       >
         {/* Header */}
         <div className="flex items-center justify-between border-b border-border pb-4 mb-4">

@@ -1,8 +1,8 @@
-const heroTxt = {
+const homeTxt = {
   greetingPrefix: "Hi, I'm",
   waveEmoji: "👋🏻",
-  connectWithMe: "Connect With Me",
+  connectWithMe: "Let's connect",
   resume: "Resume",
 };
 
-export default heroTxt;
+export default homeTxt;
