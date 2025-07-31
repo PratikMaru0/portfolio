@@ -1,10 +1,5 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Layout from "./components/Layout";
-import Home from "./pages/Home";
-import Contact from "./pages/Contact";
-import About from "./pages/About";
-import Services from "./pages/Services";
-import Testimonials from "./pages/Testimonials";
 import Admin from "./pages/Admin";
 import Dashboard from "./pages/Dashboard";
 import PageNotFound from "./components/PageNotFound";
@@ -22,6 +17,7 @@ import ServicesEdit from "./components/dashboard/ServicesEdit";
 import AboutEdit from "./components/dashboard/AboutEdit";
 import TestimonialsEdit from "./components/dashboard/TestimonialsEdit";
 import HomeEdit from "./components/dashboard/HomeEdit";
+import MainPage from "./pages/MainPage";
 const Body = () => {
   const dispatch = useDispatch();
   const admin = useSelector((store: { admin: any }) => store.admin);
@@ -54,23 +50,7 @@ const Body = () => {
       children: [
         {
           path: "/",
-          element: <Home />,
-        },
-        {
-          path: "/contact",
-          element: <Contact />,
-        },
-        {
-          path: "/about",
-          element: <About />,
-        },
-        {
-          path: "/services",
-          element: <Services />,
-        },
-        {
-          path: "/testimonials",
-          element: <Testimonials />,
+          element: <MainPage />,
         },
         {
           path: "/admin",

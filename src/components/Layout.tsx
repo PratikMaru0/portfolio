@@ -33,7 +33,7 @@ const Layout = () => {
           <Toast message={alertMsg.message} status={alertMsg.status} />
         )}
       </div>
-      {/* {hideFooter.includes(pathname) ? null : <Footer />} */}
+      {hideFooter.includes(pathname) ? null : <Footer />}
     </div>
   );
 };

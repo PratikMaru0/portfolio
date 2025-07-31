@@ -2,27 +2,23 @@ const headerTxt = {
   navigation: [
     {
       text: "Home",
-      path: "/",
+      path: "home",
     },
     {
       text: "About",
-      path: "/about",
+      path: "about",
     },
     {
       text: "Services",
-      path: "/services",
+      path: "services",
     },
     {
       text: "Testimonials",
-      path: "/testimonials",
+      path: "testimonials",
     },
     {
       text: "Contact",
-      path: "/contact",
-    },
-    {
-      text: "Admin",
-      path: "/admin",
+      path: "contact",
     },
   ],
 };
