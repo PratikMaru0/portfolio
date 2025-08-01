@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate, useLocation, NavLink } from "react-router-dom";
 import { headerTxt, commonTxt } from "../constants/texts";
 import { Button } from "./common";
 import Theme from "./Theme";
@@ -8,12 +8,28 @@ import { useSelector } from "react-redux";
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
   const admin = useSelector((store: { admin: any }) => store.admin);
-  const [activeSection, setActiveSection] = useState("#home");
+  const [activeSection, setActiveSection] = useState("home");
   const navLinks = headerTxt.navigation;
-  const isActive = (sectionId) => activeSection === sectionId;
+  const isActive = (sectionId) => {
+    if (sectionId === "admin") {
+      return isAdminRoute;
+    }
+    return activeSection === sectionId;
+  };
+
+  // Check if we're on an admin route
+  const isAdminRoute =
+    location.pathname.startsWith("/admin") || location.pathname === "/admin";
 
   useEffect(() => {
+    // If we're on admin route, set active section to admin
+    if (isAdminRoute) {
+      setActiveSection("admin");
+      return;
+    }
+
     const handleScroll = () => {
       const scrollPosition = window.scrollY + 100; // Offset for header height
       for (let i = navLinks.length - 1; i >= 0; i--) {
@@ -31,24 +47,40 @@ const Header = () => {
     window.addEventListener("scroll", handleScroll);
     handleScroll(); // Check initial position
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [isAdminRoute, navLinks]);
 
-  const scrollToSection = (sectionId) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-      // Update URL hash
-      window.history.pushState(null, null, `#${sectionId}`);
+  const handleNavigation = (linkPath: string) => {
+    if (isAdminRoute) {
+      // If on admin route, navigate to main page first
+      navigate("/");
+      // Then scroll to section after a short delay to ensure page loads
+      setTimeout(() => {
+        const element = document.getElementById(linkPath);
+        if (element) {
+          element.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+          window.history.pushState(null, "", `#${linkPath}`);
+        }
+      }, 100);
+    } else {
+      // If on main page, just scroll to section
+      const element = document.getElementById(linkPath);
+      if (element) {
+        element.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+        window.history.pushState(null, "", `#${linkPath}`);
+      }
     }
   };
   return (
     <div className="sticky top-0 w-full px-4 py-3 bg-themeBackground shadow-primary/20 shadow-xl rounded-b-sm shadow-top flex items-center justify-between z-20">
       {/* Logo  */}
       <div
-        onClick={() => navigate("/")}
+        onClick={() => handleNavigation("home")}
         className="flex links-center text-2xl font-bold text-themeText select-none cursor-pointer"
       >
         {commonTxt.firstName}
@@ -56,16 +88,16 @@ const Header = () => {
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 flex justify-center">
+      <nav className="flex-1 flex justify-center text-lg">
         <ul className="hidden md:flex bg-themeBackground/80 rounded-full px-6 py-2 gap-6 shadow-sm">
           {headerTxt.navigation.map((link) => (
             <button
               key={link.path}
               onClick={() => {
-                scrollToSection(link.path);
+                handleNavigation(link.path);
                 setMenuOpen(false);
               }}
-              className={`w-full text-center py-2 text-lg transition-colors duration-200 cursor-pointer ${
+              className={`w-full text-center transition-colors duration-200 cursor-pointer ${
                 isActive(link.path)
                   ? "text-primary "
                   : "text-themeText hover:text-primary/80"
@@ -74,6 +106,18 @@ const Header = () => {
               {link.text}
             </button>
           ))}
+          {admin && (
+            <NavLink
+              to="/admin"
+              className={`hidden md:block ${
+                isActive("admin")
+                  ? "text-primary "
+                  : "text-themeText hover:text-primary/80"
+              }`}
+            >
+              Admin
+            </NavLink>
+          )}
         </ul>
       </nav>
 
@@ -113,15 +157,15 @@ const Header = () => {
 
       {/* Mobile menu */}
       {menuOpen && (
-        <div className="absolute top-full left-0 w-full bg-themeBackground shadow-custom rounded-b-2xl flex flex-col items-center py-4 md:hidden animate-fade-in z-30">
+        <div className="absolute top-full left-0 w-full bg-themeBackground shadow-custom rounded-b-2xl flex flex-col items-center py-4 md:hidden animate-fade-in z-30 gap-4 text-lg">
           {headerTxt.navigation.map((link) => (
             <button
               key={link.path}
               onClick={() => {
-                scrollToSection(link.path);
+                handleNavigation(link.path);
                 setMenuOpen(false);
               }}
-              className={`w-full text-center py-2 text-lg transition-colors duration-200 cursor-pointer ${
+              className={`w-full text-center transition-colors duration-200 cursor-pointer ${
                 isActive(link.path)
                   ? "text-primary "
                   : "text-themeText hover:text-primary/80"
@@ -130,6 +174,21 @@ const Header = () => {
               {link.text}
             </button>
           ))}
+          {admin && (
+            <NavLink
+              to="/admin"
+              onClick={() => {
+                setMenuOpen(false);
+              }}
+              className={` block md:hidden ${
+                isActive("admin")
+                  ? "text-primary "
+                  : "text-themeText hover:text-primary/80"
+              }`}
+            >
+              Admin
+            </NavLink>
+          )}
         </div>
       )}
       {admin && <ProfileIcon email={admin.emailId} />}
