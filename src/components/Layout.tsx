@@ -25,9 +25,9 @@ const Layout = () => {
   }, [alertMsg]);
 
   return (
-    <div className="min-h-screen bg-themeBackground text-themeText">
+    <div className="min-h-screen bg-themeBackground text-themeText flex flex-col">
       <Header />
-      <div className="w-11/12 md:w-9/12 mx-auto">
+      <div className="flex-1 w-11/12 md:w-9/12 mx-auto">
         <Outlet />
         {alertMsg && (
           <Toast message={alertMsg.message} status={alertMsg.status} />

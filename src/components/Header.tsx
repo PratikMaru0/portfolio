@@ -54,7 +54,7 @@ const Header = () => {
     <div className="sticky top-0 w-full px-4 py-3 bg-themeBackground shadow-primary/20 shadow-xl rounded-b-sm shadow-top flex items-center justify-between z-20">
       {/* Logo  */}
       <div
-        onClick={() => handleNavigation("home")}
+        onClick={() => handleNavigation("home", isAdminRoute, navigate)}
         className="flex links-center text-2xl font-bold text-themeText select-none cursor-pointer"
       >
         {commonTxt.firstName}
@@ -63,7 +63,7 @@ const Header = () => {
 
       {/* Navigation */}
       <nav className="flex-1 flex justify-center text-lg">
-        <ul className="hidden md:flex bg-themeBackground/80 rounded-full px-6 py-2 gap-6 shadow-sm">
+        <ul className="hidden md:flex bg-themeBackground/80 rounded-full px-6 py-2 gap-6 shadow-sm shadow-primary/50">
           {headerTxt.navigation.map((link) => (
             <button
               key={link.path}
@@ -136,7 +136,7 @@ const Header = () => {
             <button
               key={link.path}
               onClick={() => {
-                handleNavigation(link.path, isAdminRoute);
+                handleNavigation(link.path, isAdminRoute, navigate);
                 setMenuOpen(false);
               }}
               className={`w-full text-center transition-colors duration-200 cursor-pointer ${
@@ -154,7 +154,7 @@ const Header = () => {
               onClick={() => {
                 setMenuOpen(false);
               }}
-              className={` block md:hidden ${
+              className={`block md:hidden w-full text-center ${
                 isActive("admin")
                   ? "text-primary "
                   : "text-themeText hover:text-primary/80"
