@@ -5,6 +5,7 @@ import { Button } from "./common";
 import Theme from "./Theme";
 import ProfileIcon from "./common/ProfileIcon";
 import { useSelector } from "react-redux";
+import { handleNavigation } from "../utils/mainScreenUtils";
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
@@ -49,33 +50,6 @@ const Header = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [isAdminRoute, navLinks]);
 
-  const handleNavigation = (linkPath: string) => {
-    if (isAdminRoute) {
-      // If on admin route, navigate to main page first
-      navigate("/");
-      // Then scroll to section after a short delay to ensure page loads
-      setTimeout(() => {
-        const element = document.getElementById(linkPath);
-        if (element) {
-          element.scrollIntoView({
-            behavior: "smooth",
-            block: "start",
-          });
-          window.history.pushState(null, "", `#${linkPath}`);
-        }
-      }, 100);
-    } else {
-      // If on main page, just scroll to section
-      const element = document.getElementById(linkPath);
-      if (element) {
-        element.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
-        window.history.pushState(null, "", `#${linkPath}`);
-      }
-    }
-  };
   return (
     <div className="sticky top-0 w-full px-4 py-3 bg-themeBackground shadow-primary/20 shadow-xl rounded-b-sm shadow-top flex items-center justify-between z-20">
       {/* Logo  */}
@@ -94,7 +68,7 @@ const Header = () => {
             <button
               key={link.path}
               onClick={() => {
-                handleNavigation(link.path);
+                handleNavigation(link.path, isAdminRoute, navigate);
                 setMenuOpen(false);
               }}
               className={`w-full text-center transition-colors duration-200 cursor-pointer ${
@@ -162,7 +136,7 @@ const Header = () => {
             <button
               key={link.path}
               onClick={() => {
-                handleNavigation(link.path);
+                handleNavigation(link.path, isAdminRoute);
                 setMenuOpen(false);
               }}
               className={`w-full text-center transition-colors duration-200 cursor-pointer ${

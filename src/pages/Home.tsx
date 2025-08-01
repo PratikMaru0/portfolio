@@ -4,6 +4,7 @@ import { BASE_URL } from "../utils/constants";
 import HomeTxt from "../constants/texts/homeTxt";
 import { useNavigate } from "react-router-dom";
 import SocialMediaLinks from "../components/SocialMediaLinks";
+import { handleNavigation } from "../utils/mainScreenUtils";
 
 const Home = () => {
   const [profile, setProfile] = useState({
@@ -91,7 +92,7 @@ const Home = () => {
         <Button
           text={HomeTxt.connectWithMe}
           style="w-full sm:w-auto text-center bg-primary text-themeText rounded-full px-6 sm:px-8 md:px-10 py-2.5 sm:py-3 md:py-3.5 text-sm sm:text-base md:text-lg font-medium cursor-pointer transition-all duration-300 hover:bg-primary/90 hover:shadow-lg transform hover:scale-105"
-          onClick={() => navigate("/contact")}
+          onClick={() => handleNavigation("contact")}
         />
         <Button
           text={HomeTxt.resume}
