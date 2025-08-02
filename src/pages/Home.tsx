@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Button } from "../components/common";
 import { BASE_URL } from "../utils/constants";
 import HomeTxt from "../constants/texts/homeTxt";
-import { useNavigate } from "react-router-dom";
 import SocialMediaLinks from "../components/SocialMediaLinks";
 import { handleNavigation } from "../utils/mainScreenUtils";
 
@@ -17,7 +16,6 @@ const Home = () => {
     socialMediaLinks: [],
   });
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProfile = async () => {
