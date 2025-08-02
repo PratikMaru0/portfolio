@@ -60,8 +60,7 @@ const Home = () => {
           src={profile.profilePicUrl}
           alt="Profile"
           className="w-20 h-20 sm:w-26 sm:h-26 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-cover"
-        />{" "}
-        Hehe
+        />
       </div>
 
       {/* Greeting - Responsive typography and spacing */}
