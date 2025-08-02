@@ -8,7 +8,7 @@ import { removeAlertMsg } from "../utils/store/alertSlice";
 
 const Layout = () => {
   const { pathname } = useLocation();
-  const hideFooter = ["/admin/dashboard", "/admin"];
+  const hideFooter = [/^\/admin(\/.*)?$/];
   const alertMsg = useSelector((store: { alert: any }) => store.alert);
   const dispatch = useDispatch();
 
@@ -24,6 +24,10 @@ const Layout = () => {
     };
   }, [alertMsg]);
 
+  const shouldHideFooter = hideFooter.some((pattern) =>
+    typeof pattern === "string" ? pathname === pattern : pattern.test(pathname)
+  );
+
   return (
     <div className="min-h-screen bg-themeBackground text-themeText flex flex-col">
       <Header />
@@ -33,7 +37,7 @@ const Layout = () => {
           <Toast message={alertMsg.message} status={alertMsg.status} />
         )}
       </div>
-      {hideFooter.includes(pathname) ? null : <Footer />}
+      {!shouldHideFooter && <Footer />}
     </div>
   );
 };

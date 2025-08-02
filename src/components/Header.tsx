@@ -13,7 +13,7 @@ const Header = () => {
   const admin = useSelector((store: { admin: any }) => store.admin);
   const [activeSection, setActiveSection] = useState("home");
   const navLinks = headerTxt.navigation;
-  const isActive = (sectionId) => {
+  const isActive = (sectionId: string) => {
     if (sectionId === "admin") {
       return isAdminRoute;
     }
@@ -39,7 +39,7 @@ const Header = () => {
           setActiveSection(navLinks[i].path);
           // Update URL hash without triggering scroll
           if (window.location.hash !== `#${navLinks[i].path}`) {
-            window.history.replaceState(null, null, `#${navLinks[i].path}`);
+            window.history.replaceState(null, "", `#${navLinks[i].path}`);
           }
           break;
         }
@@ -63,7 +63,7 @@ const Header = () => {
 
       {/* Navigation */}
       <nav className="flex-1 flex justify-center text-lg">
-        <ul className="hidden md:flex bg-themeBackground/80 rounded-full px-6 py-2 gap-6 shadow-sm shadow-primary/50">
+        <ul className="hidden md:flex bg-themeBackground/80 rounded-full px-6 py-2 gap-6 shadow-sm shadow-primary/30">
           {headerTxt.navigation.map((link) => (
             <button
               key={link.path}
