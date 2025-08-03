@@ -6,8 +6,8 @@ import { loginText } from "../constants/texts";
 import useAuth from "../utils/useAuth.ts";
 
 const Login = () => {
-  const [emailId, setEmailId] = useState("pratikmarutest@gmail.com");
-  const [password, setPassword] = useState("Pratik1234.@#");
+  const [emailId, setEmailId] = useState("");
+  const [password, setPassword] = useState("");
   const [isLogin, setIsLogin] = useState(true);
   const { handleLogin, handleSignUp } = useAuth();
 
