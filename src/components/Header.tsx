@@ -162,7 +162,7 @@ const Header = () => {
 
       {/* Mobile menu */}
       {menuOpen && (
-        <div className="absolute top-full left-0 w-full bg-themeBackground shadow-custom rounded-b-2xl flex flex-col items-center py-4 md:hidden animate-fade-in z-30 gap-4 text-lg">
+        <div className="absolute top-full left-0 w-full bg-themeBackground rounded-b-2xl flex flex-col items-center py-4 md:hidden animate-fade-in z-30 gap-4 text-lg shadow-primary/20 shadow-xl">
           {headerTxt.navigation.map((link) => (
             <button
               key={link.path}
