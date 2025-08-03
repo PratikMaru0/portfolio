@@ -84,13 +84,15 @@ const Header = () => {
   return (
     <div className="sticky top-0 w-full px-4 py-3 bg-themeBackground shadow-primary/20 shadow-xl rounded-b-sm shadow-top flex items-center justify-between z-20">
       {/* Logo  */}
-      <div
-        onClick={() => handleNavigation("home", isAdminRoute, navigate)}
-        className="flex links-center text-2xl font-bold text-themeText select-none cursor-pointer"
-      >
-        {firstName}
-        <span className="text-primary ml-1">.</span>
-      </div>
+      {firstName && (
+        <div
+          onClick={() => handleNavigation("home", isAdminRoute, navigate)}
+          className="flex links-center text-2xl font-bold text-themeText select-none cursor-pointer"
+        >
+          {firstName}
+          <span className="text-primary ml-1">.</span>
+        </div>
+      )}
 
       {/* Navigation */}
       <nav className="flex-1 flex justify-center text-lg">
