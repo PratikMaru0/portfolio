@@ -7,6 +7,7 @@ import ProfileIcon from "./common/ProfileIcon";
 import { useSelector } from "react-redux";
 import { handleNavigation } from "../utils/mainScreenUtils";
 import { BASE_URL } from "../utils/constants";
+import { setFavicon } from "../utils/faviconGenerator";
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
@@ -32,7 +33,13 @@ const Header = () => {
       });
       const data = await res.json();
 
-      setFirstName(data.data?.firstName || "");
+      const firstName = data.data?.firstName || "";
+      setFirstName(firstName);
+
+      // Set dynamic favicon based on first letter
+      if (firstName) {
+        setFavicon(firstName.charAt(0));
+      }
     } catch (err) {
       console.log(err);
     }
@@ -43,6 +50,8 @@ const Header = () => {
     location.pathname.startsWith("/admin") || location.pathname === "/admin";
 
   useEffect(() => {
+    // Set default favicon first
+    setFavicon("");
     fetchFirstName();
   }, []);
 
