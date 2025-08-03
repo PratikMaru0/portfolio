@@ -1,17 +1,22 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation, NavLink } from "react-router-dom";
-import { headerTxt, commonTxt } from "../constants/texts";
+import { headerTxt } from "../constants/texts";
 import { Button } from "./common";
 import Theme from "./Theme";
 import ProfileIcon from "./common/ProfileIcon";
 import { useSelector } from "react-redux";
 import { handleNavigation } from "../utils/mainScreenUtils";
+import { BASE_URL } from "../utils/constants";
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const admin = useSelector((store: { admin: any }) => store.admin);
+  const admin = useSelector(
+    (store: { admin: { emailId: string } | null }) => store.admin
+  );
   const [activeSection, setActiveSection] = useState("home");
+  const [firstName, setFirstName] = useState("");
+
   const navLinks = headerTxt.navigation;
   const isActive = (sectionId: string) => {
     if (sectionId === "admin") {
@@ -20,9 +25,26 @@ const Header = () => {
     return activeSection === sectionId;
   };
 
+  const fetchFirstName = async () => {
+    try {
+      const res = await fetch(`${BASE_URL}/profile`, {
+        credentials: "include",
+      });
+      const data = await res.json();
+
+      setFirstName(data.data?.firstName || "");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   // Check if we're on an admin route
   const isAdminRoute =
     location.pathname.startsWith("/admin") || location.pathname === "/admin";
+
+  useEffect(() => {
+    fetchFirstName();
+  }, []);
 
   useEffect(() => {
     // If we're on admin route, set active section to admin
@@ -57,7 +79,7 @@ const Header = () => {
         onClick={() => handleNavigation("home", isAdminRoute, navigate)}
         className="flex links-center text-2xl font-bold text-themeText select-none cursor-pointer"
       >
-        {commonTxt.firstName}
+        {firstName}
         <span className="text-primary ml-1">.</span>
       </div>
 
